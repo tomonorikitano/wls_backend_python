@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+
+    <head>
+        <meta charset="utf-8" name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+        <title>単語テスト</title>    
+    </head>
+
+
+    <body>
+
+
+        <div>単語帳</div>
+        <select id="wordsID">
+        </select>
+        <div id="word"></div>
+        <input type="text" id="answer">
+        <button type="button" onclick="check();" id="StartToCheck">解答</button>
+        <div id="result"></div> 
+        <button type="button" onclick="set_question();" id="next" style="visibility: hidden;">次へ</button>
+        <br>
+
+        <br>
+
+        <button id='click'>Get message from AWS lambda</button>
+        <div id='msg'></div>
+
+
+        <!----><script src="https://cdn.jsdelivr.net/npm/vue@2.6.11"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.2/axios.min.js"></script>
+
+
+    </body>
+
+
+    <script language="javascript" type="text/javascript">
+
+
+
+
+
+
+
+
+
+
+        //変数定数の初期設定
+
+
+
+
+
+        //変数
+        let wordsData = [['英語',[["red","赤"],["blue",'青']]],['算数',[["1+1","2"],["3*4",'12']]]];
+        let problem_word = "red";
+        let answer_mean = "赤";
+        let point = 0;
+        let downloadedJsonDataWordsID;
+
+        //定数
+        const button = document.getElementById('click');
+        const getWordsID = document.getElementById('wordsID');
+        const getWord = document.getElementById("word");
+        const getStartCheck = document.getElementById('StartToCheck');
+        const getAnswer = document.getElementById('answer');
+        const getResult = document.getElementById('result');
+        const getNext = document.getElementById('next');
+        
+
+
+
+
+
+
+
+
+
+        //プログラム起動時の処理
+        GetJsonFromLambda();
+
+
+
+
+
+
+
+
+
+
+        //ファンクション
+
+
+
+
+
+        //採点
+        function check(){
+
+                        
+            if(getAnswer.value == answer_mean){
+                getResult.innerHTML=`正解（答え：${answer_mean}）`;point = 1;
+            }
+
+            else if(getAnswer.value == ""){
+                getResult.innerHTML=`無回答（答え：${answer_mean}）`;point = 0;
+            }
+
+            else{
+                getResult.innerHTML=`不正解（答え：${answer_mean}）`;point = -1;
+            }            
+
+
+            answerLock_visibility(true,'visible');
+
+
+            console.log(getAnswer.value);
+            console.log(problem_word,point,new Date);
+
+
+        };
+
+
+
+
+
+        //問題をランダムに選び抽出
+        function set_question(){
+
+
+            for(i=0;i<wordsData.length;i++){
+
+
+                if (getWordsID.value == wordsData[i][0]){
+
+                    let shuffle = Math.floor(Math.random() * (wordsData[i][1].length));
+
+                    problem_word = wordsData[i][1][shuffle][0];
+                    answer_mean = wordsData[i][1][shuffle][1];
+
+                    getWord.innerHTML = problem_word;
+                    
+                }
+            }
+
+            answerLock_visibility(false,'collapse');
+            getAnswer.value = "";
+
+
+        };
+
+
+
+
+
+        function answerLock_visibility(TrueOrFalse, whichVisibility){
+
+            getStartCheck.disabled = TrueOrFalse;
+            getAnswer.disabled = TrueOrFalse;
+
+
+            getResult.style.visibility= whichVisibility;
+            getNext.style.visibility = whichVisibility;
+
+        };
+
+
+
+
+
+        //単語帳のJSONファイルをダウンロード
+        function GetJsonFromLambda(){
+            fetch('https://mwlgt31iu3.execute-api.ap-northeast-1.amazonaws.com/demo_s3tohtml/')
+            .then(response => {
+                return response.json();
+            })
+            .then(result => {
+                word_mean = result.json_wordsID_word_mean;
+                for(i = 0 ;i < result.json_wordsID_list.length; i++){
+                    var words_array = [];
+                    for(j = 0 ;j < word_mean[result.json_wordsID_list[i]].length; j++){
+                        var a = word_mean[result.json_wordsID_list[i]][j].word;
+                        var b = word_mean[result.json_wordsID_list[i]][j].meaning;
+                        words_array.push([a,b]);
+                    }
+                    wordsData.push(
+                        [JSON.stringify(result.json_wordsID_list[i]),words_array]
+                    );
+                   
+                }
+
+                createListWordsID();
+
+            })
+            .catch((e) => {
+                console.log(e);
+            })
+        };
+
+
+
+
+
+    //apiからの単語帳データをリストに追加
+    function createListWordsID(){
+        for(i=0;i<wordsData.length;i++){
+            
+            let newWordID = document.createElement("option");
+            console.log(wordsData[i][0]);
+
+            newWordID.value = wordsData[i][0];
+            newWordID.text = wordsData[i][0];
+
+            getWordsID.appendChild(newWordID);
+
+        }
+
+        getWord.innerHTML = problem_word;
+        getWord.style.visibility = 'visible';
+
+
+    };
+
+
+
+
+
+
+
+
+
+
+        //イベントリスナー
+
+
+
+
+
+        //取得ボタンが押されたら api を使い JSON データを入手
+        
+        button.addEventListener('click', () => {
+            GetJsonFromLambda();
+        });
+
+
+
+
+
+        //単語帳が変更したときに表示問題を変える
+        getWordsID.addEventListener("change",function(){
+            set_question();
+        });
+
+
+
+
+
+
+        
+
+
+
+    </script>
+
+    
+</html>
