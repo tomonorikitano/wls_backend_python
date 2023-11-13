@@ -52,11 +52,11 @@
 
 
         //変数
-        let wordsData = [['英語',[["red","赤"],["blue",'青']]],['算数',[["1+1","2"],["3*4",'12']]]];
-        let problem_word = "red";
-        let answer_mean = "赤";
-        let point = 0;
+        let wordsData = [];
+        let problem_word ;
+        let answer_mean ;
         let downloadedJsonDataWordsID;
+        let point;
 
         //定数
         const button = document.getElementById('click');
@@ -99,15 +99,15 @@
 
                         
             if(getAnswer.value == answer_mean){
-                getResult.innerHTML=`正解（答え：${answer_mean}）`;point = 1;
+                getResult.innerHTML=`正解（答え：${answer_mean}）`;point = "correct";
             }
 
             else if(getAnswer.value == ""){
-                getResult.innerHTML=`無回答（答え：${answer_mean}）`;point = 0;
+                getResult.innerHTML=`無回答（答え：${answer_mean}）`;point = "noAnswer";
             }
 
             else{
-                getResult.innerHTML=`不正解（答え：${answer_mean}）`;point = -1;
+                getResult.innerHTML=`不正解（答え：${answer_mean}）`;point = "incorrect";
             }            
 
 
@@ -116,6 +116,40 @@
 
             console.log(getAnswer.value);
             console.log(problem_word,point,new Date);
+
+
+
+            POSTAnswerData();
+
+            
+
+        };
+
+
+
+
+
+        //JSONでS3に送信
+        function POSTAnswerData(){
+
+
+
+            //JSONデータ作成
+            let resultDataFile = {
+                "word": problem_word, "wordsID": getWordsID.value, "result": point
+            }
+
+            const resultDataFileJSON = {
+                method: "POST", body: JSON.stringify(resultDataFile), mode: "no-cors"
+            };
+
+
+            console.log(resultDataFileJSON);
+            fetch("https://9h2caq2cuc.execute-api.ap-northeast-1.amazonaws.com/RightAndWrong_api/", resultDataFileJSON)
+                .then(response => response.text())
+                .then(data => console.log(data))
+                .catch(error => console.error(error));
+
 
 
         };
@@ -184,12 +218,14 @@
                         words_array.push([a,b]);
                     }
                     wordsData.push(
-                        [JSON.stringify(result.json_wordsID_list[i]),words_array]
+                        [result.json_wordsID_list[i].replace(".csv",""),words_array]
                     );
                    
                 }
 
                 createListWordsID();
+                set_question();
+                
 
             })
             .catch((e) => {
