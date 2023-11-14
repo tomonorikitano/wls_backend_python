@@ -1,88 +1,111 @@
 <!DOCTYPE html>
-<html lang="ja">
-
-
+    <html lang="ja">
+        
     <head>
         <meta charset="utf-8" name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-        <title>単語テスト</title>    
+        <link rel="stylesheet" type="text/css" href="Main_ShyGuy.css"/>
+        <title>パーツ</title>    
     </head>
 
-
     <body>
+        <header>
+            <h1>WORD BOOK QUESTION</h1>
+        </header>
 
 
-        <div>単語帳</div>
-        <select id="wordsID">
-        </select>
-        <div id="word"></div>
-        <input type="text" id="answer">
-        <button type="button" onclick="check();" id="StartToCheck">解答</button>
-        <div id="result"></div> 
-        <button type="button" onclick="set_question();" id="next" style="visibility: hidden;">次へ</button>
+        
+        <hr></hr>
+
+        <main>
+            <div class="backHome">
+                <button type="button"  class="backHomeButton" onclick="location.href='https://tomonorikitano.github.io/wls_backend_python/'">BACK HOME</button>
+            </div>
+            <div>
+                <section id="selectWordsID">
+                    <ul id="listWordsID">
+                    </ul>
+                </section>
+                <section id="questionWord">
+                    <div>
+                        <div class="questionHeader">
+                            <h1 id="wordsIDName"></h1>
+                        </div>
+                        <div>
+                            <br>
+                            <br>
+                            <h2 id="word">スペシャルイベント「ぼっち・ざ・ろっく！です。」ダイジェスト映像公開！</h2>
+                            <input type="text" id="answer">
+                            <button type="button" onclick="check();" id="StartToCheck">解答</button>
+                            <div id="word"></div>
+                            <br>
+                            <br>
+                            <br>
+                            <div>
+                                <div id="result"></div> 
+                                <br>
+                            </div>
+                            <div class="divNext">
+                                <button type="button" onclick="next_question();" id="next" style="visibility: hidden;">次へ</button>
+                            </div>
+                            
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </main>
         <br>
 
         <br>
 
-        <button id='click'>Get message from AWS lambda</button>
-        <div id='msg'></div>
 
-
-        <!----><script src="https://cdn.jsdelivr.net/npm/vue@2.6.11"></script>
+        <!--
+            wordsID
+            word
+            answer
+            StartToCheck
+            next
+            result
+        -->
+        <script src="https://cdn.jsdelivr.net/npm/vue@2.6.11"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.2/axios.min.js"></script>
 
 
     </body>
 
-
     <script language="javascript" type="text/javascript">
-
-
-
-
-
-
-
-
-
-
-        //変数定数の初期設定
-
-
-
-
-
-        //変数
-        let wordsData = [];
+        
+        let wordsData = [];//[['英語',[["red","赤"],["blue",'青']]],['算数',[["1+1","2"],["3*4",'12']]]];
         let problem_word ;
         let answer_mean ;
         let downloadedJsonDataWordsID;
+        let wordsID;
+        let nowSelectWords;
+        let oneBackSelectWords;
         let point;
 
         //定数
+        //const getWordsID = document.getElementById('wordsID');
         const button = document.getElementById('click');
-        const getWordsID = document.getElementById('wordsID');
         const getWord = document.getElementById("word");
         const getStartCheck = document.getElementById('StartToCheck');
         const getAnswer = document.getElementById('answer');
         const getResult = document.getElementById('result');
         const getNext = document.getElementById('next');
+        const getListWordsID = document.getElementById("listWordsID");
+        const getAreaSelect = document.getElementsByClassName("areaSelect");        
+        const getNewBlock = document.getElementsByClassName("newBlock");
+        const getWordsIDName = document.getElementById("wordsIDName");
+
+
+
+
+
         
-
-
-
-
-
-
-
-
-
-        //プログラム起動時の処理
         GetJsonFromLambda();
 
 
 
-
-
+        console.log(getNewBlock.parentElement);
 
 
 
@@ -99,15 +122,15 @@
 
                         
             if(getAnswer.value == answer_mean){
-                getResult.innerHTML=`正解（答え：${answer_mean}）`;point = "correct";
+                getResult.innerHTML=`正解!! （答え：${answer_mean}）`;point = "correct";
             }
 
             else if(getAnswer.value == ""){
-                getResult.innerHTML=`無回答（答え：${answer_mean}）`;point = "noAnswer";
+                getResult.innerHTML=`無回答 （答え：${answer_mean}）`;point = "noAnswer";
             }
 
             else{
-                getResult.innerHTML=`不正解（答え：${answer_mean}）`;point = "incorrect";
+                getResult.innerHTML=`不正解 （答え：${answer_mean}）`;point = "incorrect";
             }            
 
 
@@ -121,7 +144,7 @@
 
             POSTAnswerData();
 
-            
+
 
         };
 
@@ -136,8 +159,8 @@
 
             //JSONデータ作成
             let resultDataFile = {
-                "word": problem_word, "wordsID": getWordsID.value, "result": point
-            }
+                "word": problem_word, "wordsID": wordsID, "result": point
+            };
 
             const resultDataFileJSON = {
                 method: "POST", body: JSON.stringify(resultDataFile), mode: "no-cors"
@@ -145,6 +168,7 @@
 
 
             console.log(resultDataFileJSON);
+            console.log(JSON.stringify(resultDataFile));
             fetch("https://9h2caq2cuc.execute-api.ap-northeast-1.amazonaws.com/RightAndWrong_api/", resultDataFileJSON)
                 .then(response => response.text())
                 .then(data => console.log(data))
@@ -156,31 +180,75 @@
 
 
 
+        function createListWordsID(){
+            console.log(wordsData);
+            for(i=0;i<wordsData.length;i++){
+
+                
+                let newList = document.createElement("li");
+                let newBlock = document.createElement("a");
+                let newBlockName = document.createElement("h3");
+    
+                newList.classList.add("areaSelect");
+                newBlock.classList.add('newBlock');
+                newList.id = `WordsID_${i}`;
+                console.log(wordsData[i][0]);
+
+                newBlockName.innerHTML = wordsData[i][0];
+
+                newBlock.appendChild(newBlockName);
+                newList.appendChild(newBlock);
+                getListWordsID.appendChild(newList);
+                console.log(`Number is ${i}`);
+                document.getElementById(`WordsID_${i}`).setAttribute('onclick', `set_question(${i})`);
+                
+
+            }
+
+            //getWord.innerHTML = problem_word;
+            //getWord.style.visibility = 'visible';
+
+
+        };
+
+
+
+
+
+
+
 
 
         //問題をランダムに選び抽出
-        function set_question(){
+        function set_question(wordsIDNumber){
 
+            let shuffle = Math.floor(Math.random() * (wordsData[wordsIDNumber][1].length));
 
-            for(i=0;i<wordsData.length;i++){
+            problem_word = wordsData[wordsIDNumber][1][shuffle][0];
+            answer_mean = wordsData[wordsIDNumber][1][shuffle][1];
+            if(oneBackSelectWords != null){
+                document.getElementById(oneBackSelectWords).classList.remove("wordsIDSelected");
+            };
+            
+            document.getElementById(`WordsID_${wordsIDNumber}`).classList.add("wordsIDSelected");
 
+            oneBackSelectWords = `WordsID_${wordsIDNumber}`;
+            nowSelectWords = wordsIDNumber;
 
-                if (getWordsID.value == wordsData[i][0]){
-
-                    let shuffle = Math.floor(Math.random() * (wordsData[i][1].length));
-
-                    problem_word = wordsData[i][1][shuffle][0];
-                    answer_mean = wordsData[i][1][shuffle][1];
-
-                    getWord.innerHTML = problem_word;
-                    
-                }
-            }
+            getWord.innerHTML = problem_word;
 
             answerLock_visibility(false,'collapse');
             getAnswer.value = "";
+            wordsID = wordsData[wordsIDNumber][0];
+            getWordsIDName.innerHTML = wordsID;
+        };
 
 
+
+
+
+        function next_question(){
+            set_question(nowSelectWords);
         };
 
 
@@ -198,6 +266,14 @@
 
         };
 
+
+
+
+
+
+
+
+        
 
 
 
@@ -224,7 +300,7 @@
                 }
 
                 createListWordsID();
-                set_question();
+                set_question(0);
                 
 
             })
@@ -234,69 +310,5 @@
         };
 
 
-
-
-
-    //apiからの単語帳データをリストに追加
-    function createListWordsID(){
-        for(i=0;i<wordsData.length;i++){
-            
-            let newWordID = document.createElement("option");
-            console.log(wordsData[i][0]);
-
-            newWordID.value = wordsData[i][0];
-            newWordID.text = wordsData[i][0];
-
-            getWordsID.appendChild(newWordID);
-
-        }
-
-        getWord.innerHTML = problem_word;
-        getWord.style.visibility = 'visible';
-
-
-    };
-
-
-
-
-
-
-
-
-
-
-        //イベントリスナー
-
-
-
-
-
-        //取得ボタンが押されたら api を使い JSON データを入手
-        
-        button.addEventListener('click', () => {
-            GetJsonFromLambda();
-        });
-
-
-
-
-
-        //単語帳が変更したときに表示問題を変える
-        getWordsID.addEventListener("change",function(){
-            set_question();
-        });
-
-
-
-
-
-
-        
-
-
-
     </script>
-
-    
 </html>
