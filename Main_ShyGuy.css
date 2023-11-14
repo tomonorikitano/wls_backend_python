@@ -1,0 +1,418 @@
+h1{
+    padding:1px;
+    margin: 0px 5px;
+    font-weight: bold;
+    font-family: "ＭＳ Ｐゴシック";
+}
+
+p{
+    background: #000000;
+    color: #ffffff;
+    font-size: medium;
+    font-family: "ＭＳ Ｐゴシック";
+}
+
+#word, #result{
+    margin-top: 20%;
+    font-size: 60px;
+    font-weight: bold;
+    font-family: "ＭＳ Ｐゴシック";
+    
+}
+
+header{
+    padding: none;
+    height: 10%;
+    font-size: 30px;
+    font-weight: bold;
+    font-family: "ＭＳ Ｐゴシック";
+}
+
+
+#wordsID, #answer, #StartToCheck, #next, .backHomeButton{
+    font-size: 30px;
+    font-weight: bold;
+    font-family: "ＭＳ Ｐゴシック";  
+}
+
+
+#answer{
+    position: relative;
+    width: 50%;
+}
+
+
+#word, #wordsID, #answer, #result, #StartToCheck, #next{
+    margin: 5px 5px;
+}
+
+#wordsID, #answer, #StartToCheck, #next{
+    padding: 20px 40px;
+}
+
+.divNext{
+    padding-right: 15px;
+    text-align: left;
+}
+
+
+.questionHeader{
+    display: block;
+    position:relative;
+    padding-top: 10px;
+    padding-bottom: 15px;
+    margin-right: 15px;
+    margin-bottom: 15px;
+    border-width: 1.5px;
+    border-bottom: 1.5px solid#ffffff;
+}
+
+.questionHeader::after { /* 矢印の表示設定 */
+    position: absolute;
+    margin: auto;
+    bottom: 50%;
+    
+    right: 20px;
+    width: 10px;
+    height: 10px;
+    content: "";
+    border-top: 3px solid #fff;
+    border-right: 3px solid #fff;
+    transform: rotate(135deg);
+    /*visibility: hidden;　/* マウスオーバー前は非表示 */
+}
+
+
+
+#wordsIDName{
+    margin-right: 54px;
+    font-size: 30px;
+}
+
+
+
+#answer, #StartToCheck, #next{
+    border-radius: 20px;
+}
+
+
+
+#answer {
+    border: none;
+    color: white;
+    background:rgba(255, 255, 255, 0.2);
+}
+#answer:not(:disabled):hover{
+    background:rgba(255, 255, 255, 0.3);
+}
+#answer:disabled{
+    color: rgba(255, 255, 255, 0.7);
+}
+
+
+#StartToCheck{
+    border: none;
+    color: #ff8349;
+    background: white;
+}
+#StartToCheck:not(:disabled):hover{
+    background:rgba(255, 255, 255, 0.8);
+}
+#StartToCheck:disabled{
+    color: rgba(255, 131, 73, 0.7);
+    background:rgba(255, 255, 255, 0.7);
+}
+#StartToCheck:active{
+    background:rgba(255, 255, 255, 0.5);
+}
+
+
+
+#next{
+    border: none;
+    color: #464646;
+    background: white;
+}
+#next:hover{
+    color: rgba(106, 106, 106, 0.8);
+    background:rgba(255, 255, 255, 0.8);
+}
+#next:active{
+    background:rgba(255, 255, 255, 0.5);
+    color: rgba(106, 106, 106, 0.8);
+}
+
+
+
+#selectWordsID{
+    overflow-y: scroll;
+    top: 250px;
+    height: 600px;
+    position: absolute;
+    right: 70%;
+    left: 3%;
+}
+
+#questionWord{
+    overflow-y: scroll;
+    top: 250px;
+    height: 600px;
+    position: absolute;
+    right: 5%;
+    left: 35%;
+}
+
+#closed{
+    position: fixed;
+    top: 15vw;
+}
+
+
+#listWordsID{
+    padding: 0;
+    padding-right: 15px;
+    margin: 0;
+}
+
+#listWordsID li:last-child{
+    border-bottom: 1.5px solid#ffffff;
+}
+
+
+.areaSelect{
+    background:rgba(0, 0, 0, 0);
+    padding: 15px;
+    padding-right: 0px;
+    border-top: 1.5px solid#ffffff;
+}
+
+.areaSelect:hover{
+    background:rgba(255, 255, 255, 0.2);
+}
+
+.areaSelect:active{
+    background:rgba(255, 255, 255, 0.2);
+}
+
+
+
+.wordsIDSelected{
+    background:rgba(255, 255, 255, 0.2);
+}
+
+
+
+.backHome{
+    padding-top: 15px;
+}
+
+
+.backHomeButton{
+    margin-left: none;
+    display: block;
+    border: none;
+    position:relative;
+    color: rgba(255, 131, 73, 1);
+    background-color: white;
+    padding-left: 30px;
+}
+.backHomeButton:hover{
+    color: rgba(255, 81, 0, 1);
+    background:rgba(255, 255, 255, 0.8);
+    font-weight:bold;
+}
+.backHomeButton:active{
+    background:rgba(255, 255, 255, 0.5);
+    color: rgba(255, 131, 73, 0.5);
+}
+
+.backHomeButton::before { /* 矢印の表示設定 */
+    position: absolute;
+    margin: auto;
+    top: 49%;
+    bottom: 50%;
+    left: 12px;
+    width: 12px;
+    height: 12px;
+    content: "";
+    border-top: 2px solid rgba(255, 131, 73, 1);
+    border-right: 2px solid rgba(255, 131, 73, 1);
+    transform: rotate(225deg);
+    /*visibility: hidden;　/* マウスオーバー前は非表示 */
+}
+.backHomeButton:hover:before { /* 矢印の表示設定 */
+    border-top: 3px solid rgb(255, 81, 0);
+    border-right: 3px solid rgb(255, 81, 0);
+    transform: rotate(225deg);
+    /*visibility: hidden;　/* マウスオーバー前は非表示 */
+}
+.backHomeButton:active:before { /* 矢印の表示設定 */
+    border-top: 4.5px solid rgba(255, 131, 73, 0.5);
+    border-right: 4.5px solid rgba(255, 131, 73, 0.5);
+    transform: rotate(225deg);
+    /*visibility: hidden;　/* マウスオーバー前は非表示 */
+}
+
+
+
+.newBlock{
+    display: block;
+    position:relative;
+    background-color: transparent;
+    padding-right: 54px;
+}
+
+.newBlock::after { /* 矢印の表示設定 */
+    position: absolute;
+    margin: auto;
+    top: 0;
+    bottom: 0;
+    right: 20px;
+    width: 10px;
+    height: 10px;
+    content: "";
+    border-top: 3px solid #fff;
+    border-right: 3px solid #fff;
+    transform: rotate(45deg);
+    /*visibility: hidden;　/* マウスオーバー前は非表示 */
+}
+
+
+
+body{
+    font-weight: bolder;
+    background-color: #ff9a6b;
+    color: white;
+    /*background-image: url("images/kirby-01-02.png") !important;*/
+    background-size: cover;
+    background-repeat: no-repeat;
+    
+}
+
+#output {
+    visibility: collapse;
+    position: fixed;
+    padding-left: 30px;
+    padding-right: 30px;
+    top: 22%;
+    margin: 10px 15px;
+    border-radius: 20px;
+    padding: 15px 30px;
+    background-color: whitesmoke;
+}
+
+.btn, #startBtn , .finish{
+    text-align: left;
+    font-family: "ＭＳ Ｐゴシック";
+    font-size: 50px;
+    font-weight: bold;
+    padding: 8px 20px;       /*余白を設定*/
+    margin: 10px 50px ; /*余白を作成*/
+    color: #244352;            /*文字の色*/
+    border-color: #9999ff;
+    border-radius: 10px;     /*角を丸める*/
+    border-width: 5px;
+    background: white;    /*ボタン色を設定*/
+}
+.btn{
+    padding-right: 40px;
+}
+#finished{
+    display: none;
+    position: fixed;
+    top: 30vw;
+}
+#ansrgn{
+    display: none;
+    position: fixed;
+    bottom: 5%;
+}
+
+#startBtn{
+    /*background-image: url("/static/images/Nier.png") !important;*/
+    background-size: contain;
+    background-size: 25%;
+    background-repeat:repeat-x;
+    
+}
+
+.button_ctrl {
+    position: fixed;
+    margin: 0px 0px;
+    bottom: 20%;
+    right: 10vw;
+}
+
+.block{
+    display:inline-block;
+}
+
+
+
+
+
+
+
+
+
+
+
+@media screen and (max-width: 800px){
+    h1 , #startBtn, .button_ctrl{
+        text-align: center;
+    }
+    .button_ctrl{
+        position: fixed;
+        bottom: 40%;
+        margin: 0px 0px;
+        left: 0;
+        right: 0;
+    }
+    #ansrgn{
+        text-align: center;
+        left: 0px;
+        right: 0px;
+    }
+    #output{
+        top: 19%;
+        text-align: center;
+        left: 0;
+        right: 0;
+    }
+    .btn{
+        text-align: center;
+        padding: 6px 20px;
+        padding-left: 20px;
+        padding-right: 20px;
+        margin: 1vw 1vw;
+        font-size: 6vw;
+        bottom: 8%;
+        left: 0px;
+        right: 0px;
+    }
+    .finish{
+        padding-left: 20px;
+        padding-right: 20px;
+        font-size: 6vw;
+    }
+    #finished{
+        text-align: center;
+        top: 50%;
+        left: 0px;
+        right: 0px;
+    }
+    .btnn{
+        font-size: 5vw;
+        margin: 10px 20px;
+    }
+    #closed{
+        top: 30vw;
+    }
+
+    body{
+        /*background-image: url("images/kirby-02-02.png") !important;*/
+        background-size: cover;
+        text-align: center;
+    }
+    
+}
