@@ -15,6 +15,9 @@
         <label for="id">ID:</label>
         <input type="text" id="id" name="id" required><br><br>
 
+        <label for="item">Item:</label>
+        <input type="text" value=0 id="item" name="item" required><br><br>
+
         <button type="button" id="submitButton">Submit</button>
     </form>
 
@@ -34,7 +37,8 @@
             const data = {
                 "word": word,
                 "meaning": mean,
-                "wordsID": id
+                "wordsID": id,
+                "item": item
             };
 
             const param = {
