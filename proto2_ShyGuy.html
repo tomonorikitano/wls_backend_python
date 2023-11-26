@@ -143,6 +143,7 @@
 
 
             POSTAnswerData();
+            GetOneWordsList(nowSelectWords);
 
 
 
@@ -152,34 +153,8 @@
 
 
 
-        //JSONでS3に送信
-        function POSTAnswerData(){
 
-
-
-            //JSONデータ作成
-            let resultDataFile = {
-                "word": problem_word, "wordsID": wordsID, "result": point
-            };
-
-            const resultDataFileJSON = {
-                method: "POST", body: JSON.stringify(resultDataFile), mode: "no-cors"
-            };
-
-
-            console.log(resultDataFileJSON);
-            console.log(JSON.stringify(resultDataFile));
-            fetch("https://9h2caq2cuc.execute-api.ap-northeast-1.amazonaws.com/RightAndWrong_api/", resultDataFileJSON)
-                .then(response => response.text())
-                .then(data => console.log(data))
-                .catch(error => console.error(error));
-
-
-
-        };
-
-
-
+        //単語帳リストの作成
         function createListWordsID(){
             console.log(wordsData);
             for(i=0;i<wordsData.length;i++){
@@ -255,6 +230,7 @@
 
 
 
+        //ボタンの機能停止回復、結果などのビジビリティ変更
         function answerLock_visibility(TrueOrFalse, whichVisibility){
 
             getStartCheck.disabled = TrueOrFalse;
@@ -273,8 +249,15 @@
 
 
 
-        
 
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+////////////////////////////////////////////////////   JSON関連　　////////////////////////////////////////////////////
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
 
@@ -308,6 +291,74 @@
                 console.log(e);
             })
         };
+
+
+
+
+
+
+        //JSONから選択単語問題のリストを取り出し、入れ替え
+        function GetOneWordsList(wordsIDNumber){
+            fetch('https://mwlgt31iu3.execute-api.ap-northeast-1.amazonaws.com/demo_s3tohtml/')
+            .then(response => {
+                return response.json();
+            })
+            .then(result => {
+                console.log(`I try to get WordsList Number${wordsIDNumber}.`)
+                var words_array = [];
+                for(i = 0 ; i < word_mean[result.json_wordsID_list[wordsIDNumber]].length; i++){
+                    var a = word_mean[result.json_wordsID_list[wordsIDNumber]][i].word;
+                    var b = word_mean[result.json_wordsID_list[wordsIDNumber]][i].meaning;
+                    words_array.push([a,b]);
+                }
+                console.log(result.json_wordsID_list[wordsIDNumber].replace(".csv",""));
+                wordsData.splice( wordsIDNumber, 1,
+                    [result.json_wordsID_list[wordsIDNumber].replace(".csv",""),words_array]
+                );
+                console.log(wordsData);
+                console.log("May be correct.")
+            })
+            .catch((e) => {
+                console.log(e);
+            })
+
+        };
+
+
+
+
+
+                //JSONでS3に送信
+        function POSTAnswerData(){
+
+
+
+            //JSONデータ作成
+            let resultDataFile = {
+                "word": problem_word, "wordsID": wordsID, "result": point, "timestamp":new Date, "weight":0
+            };
+
+            const resultDataFileJSON = {
+                method: "POST", body: JSON.stringify(resultDataFile), mode: "no-cors"
+            };
+
+
+            console.log(resultDataFileJSON);
+            console.log(JSON.stringify(resultDataFile));
+            fetch("https://9h2caq2cuc.execute-api.ap-northeast-1.amazonaws.com/RightAndWrong_api/", resultDataFileJSON)
+                .then(response => response.text())
+                .then(data => console.log(data))
+                .catch(error => console.error(error));
+
+
+
+        };
+
+
+
+
+
+        
 
 
     </script>
