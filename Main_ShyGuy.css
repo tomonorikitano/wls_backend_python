@@ -320,7 +320,9 @@ body{
 
 @media screen and (max-width: 800px){
 
+
     #selectWordsID{
+        top: 125px;
         visibility: collapse;
         position: absolute;
         bottom: 15px;
@@ -329,6 +331,7 @@ body{
 
 
     .questionHeaderAnimation{
+        top: 125px;
         background-color: #ff9a6b;
         visibility: visible !important;
         animation-duration: 0.8s;
@@ -349,17 +352,74 @@ body{
     }
 
     #questionWord{
-        overflow-y:auto;
+        top: 125px;
         right: 0;
         left: 15px;
     }
 
     body{
         /*background-image: url("images/kirby-02-02.png") !important;*/
-        background-size: cover;
+        font-size: 100%;
         text-align: center;
     }
+
+
+    h1{
+        padding:1px;
+        margin: 0px 5px;
+        font-size: 200%;
+        font-weight: bold;
+        font-family: "ＭＳ Ｐゴシック";
+    }
+
+    h2{
+        font-size: 150%;
+    }
     
+    p{
+        font-size: 100%;
+    }
+    
+    #word, #result{
+        margin-top: 3%;
+        font-size: 150%;
+        
+    }
+    
+    header{
+        height: 10%;
+        font-size: 100%;
+    }
+
+    .backHomeButton{
+        font-size: 150%;
+    }
+    
+    
+    #wordsID, #answer, #StartToCheck, #next{
+        font-size: 100%;
+    }
+
+
+
+    .backHomeButton::before { /* 矢印の表示設定 */
+        position: absolute;
+        margin: auto;
+        top: 49%;
+        bottom: 50%;
+        left: 8px;
+        width: 8px;
+        height: 8px;
+        content: "";
+        transform: rotate(225deg);
+        /*visibility: hidden;　/* マウスオーバー前は非表示 */
+    }
+
+
+    .divNext{
+        padding-right: 15px;
+        text-align: center;
+    }
 }
 
 
@@ -372,13 +432,13 @@ body{
 
 @keyframes wordsListslidein {
     from {
-        top: 200px;
+        top: 100px;
         bottom: 100%;
         width: 100%;
       }
     
       to {
-        top: 250px;
+        top: 125px;
         bottom: 15px;
         width: 100%;
       }
