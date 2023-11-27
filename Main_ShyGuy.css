@@ -304,6 +304,11 @@ body{
 
 @media screen and (max-width: 800px){
 
+    #wordDiv{
+        position: relative;
+        right: 0%;
+        left: 0%;
+    }
 
     #selectWordsID{
         top: 125px;
@@ -469,8 +474,8 @@ body{
       }
 
       60% {
-        right: -15%;
-        left: 15%;
+        right: -5%;
+        left: 5%;
       }
     
       to {
@@ -492,8 +497,8 @@ body{
         left: 100%;
       }
       60% {
-        right: 15%;
-        left: -15%;
+        right: 5%;
+        left: -5%;
       }
       to {
         right: 0%;
