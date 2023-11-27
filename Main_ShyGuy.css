@@ -322,7 +322,7 @@ body{
         top: 125px;
         background-color: #ff9a6b;
         visibility: visible !important;
-        animation-duration: 0.3s;
+        animation-duration: 0.4s;
         animation-name:wordsListslidein;
         border-top: 1.5px solid#ffffff;
         border-bottom: 1.5px solid#ffffff;
@@ -332,7 +332,7 @@ body{
 
 
     .questionWordAnimation{
-        animation-duration: 0.3s;
+        animation-duration: 0.4s;
         animation-name: wordSlidein;
     }
     
@@ -460,17 +460,22 @@ body{
 @keyframes wordsListslidein {
     from {
         right: 0%;
-        width: 0%;
+        left: -100%;
         /*
         top: 100px;
         bottom: 100%;
         width: 100%;
         */
       }
+
+      60% {
+        right: -15%;
+        left: 15%;
+      }
     
       to {
-        right: 0%;
-        width: 100%;
+        right: 100%;
+        left: 0%;
         /*
         top: 125px;
         bottom: 15px;
@@ -483,13 +488,16 @@ body{
 
 @keyframes wordSlidein {
     from {
+        right: -100%;
         left: 100%;
-        width: 300%;
       }
-    
+      60% {
+        right: 15%;
+        left: -15%;
+      }
       to {
+        right: 0%;
         left: 0%;
-        width: 100%;
       }
     
 }
