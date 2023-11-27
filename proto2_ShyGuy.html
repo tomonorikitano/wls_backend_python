@@ -34,7 +34,7 @@
                             <br>
                             <br>
                             <div id="wordDiv">
-                                <h2 id="word"></h2>
+                                <h2 id="word">スペシャルイベント「ぼっち・ざ・ろっく！です。」ダイジェスト映像公開！</h2>
                             </div>
                             <input type="text" id="answer">
                             <button type="button" onclick="check();" id="StartToCheck">解答</button>
@@ -223,6 +223,7 @@
 
 
             document.getElementById("questionWord").style.visibility = "visible";
+            document.getElementById("questionWord").style.display = "block";
             document.getElementById("selectWordsID").classList.remove("questionHeaderAnimation");
             document.getElementById("wordDiv").classList.add("questionWordAnimation");
             
@@ -408,9 +409,9 @@
 
         function questionWordVisibility(){
             if(window.innerWidth > 800){
-                document.getElementById("questionWord").style.visibility = "visible";
+                document.getElementById("questionWord").style.display = "block";
             }else{
-                document.getElementById("questionWord").style.visibility = "collapse";
+                document.getElementById("questionWord").style.display = "none";
                 document.getElementById("selectWordsID").classList.add("questionHeaderAnimation");
             };
         };
