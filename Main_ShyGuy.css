@@ -311,8 +311,6 @@ body{
         position: absolute;
         bottom: 15px;
         width: 100%;
-        border-top: 1.5px solid#ffffff;
-        border-bottom: 1.5px solid#ffffff;
     }
 
     #questionWord{
@@ -324,7 +322,7 @@ body{
         top: 125px;
         background-color: #ff9a6b;
         visibility: visible !important;
-        animation-duration: 0.8s;
+        animation-duration: 0.3s;
         animation-name:wordsListslidein;
         border-top: 1.5px solid#ffffff;
         border-bottom: 1.5px solid#ffffff;
@@ -338,10 +336,43 @@ body{
         animation-name: wordSlidein;
     }
     
+    
+
+
+
+    .questionHeader::after { /* 矢印の表示設定 */
+        border-top: 3px solid rgba(255, 255, 255, 0);
+        border-right: 3px solid rgba(255, 255, 255, 0);
+        /*visibility: hidden;　/* マウスオーバー前は非表示 */
+    }
+    .questionHeader::before { /* 矢印の表示設定 */
+        position: absolute;
+        margin: auto;
+        bottom: 40%;
+        
+        left: 20px;
+        width: 15px;
+        height: 15px;
+        content: "";
+        border-top: 3px solid #fff;
+        border-right: 3px solid #fff;
+        transform: rotate(225deg);
+        /*visibility: hidden;　/* マウスオーバー前は非表示 */
+    }
+    .questionHeader:hover{
+        background:rgba(255, 255, 255, 0.3);
+        color: rgba(255, 131, 73, 0.7);    
+    }
     .questionHeader:active{
         background:rgba(255, 255, 255, 0.5);
         color: rgba(255, 131, 73, 0.5);    
     }
+
+    #wordsIDName{
+        margin-left: 54px;
+    }
+
+
 
     #questionWord{
         top: 125px;
@@ -406,7 +437,7 @@ body{
 
 
     .divNext{
-        padding-right: 15px;
+        padding-right: 0px;
         text-align: center;
     }
 
@@ -428,15 +459,23 @@ body{
 
 @keyframes wordsListslidein {
     from {
+        right: 0%;
+        width: 0%;
+        /*
         top: 100px;
         bottom: 100%;
         width: 100%;
+        */
       }
     
       to {
+        right: 0%;
+        width: 100%;
+        /*
         top: 125px;
         bottom: 15px;
         width: 100%;
+        */
       }
     
 }
