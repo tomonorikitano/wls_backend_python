@@ -27,13 +27,15 @@
                 </section>
                 <section id="questionWord">
                     <div>
-                        <div class="questionHeader">
+                        <div class="questionHeader" onclick="wordsListAnimation()">
                             <h1 id="wordsIDName"></h1>
                         </div>
                         <div>
                             <br>
                             <br>
-                            <h2 id="word">スペシャルイベント「ぼっち・ざ・ろっく！です。」ダイジェスト映像公開！</h2>
+                            <div id="wordDiv">
+                                <h2 id="word"></h2>
+                            </div>
                             <input type="text" id="answer">
                             <button type="button" onclick="check();" id="StartToCheck">解答</button>
                             <div id="word"></div>
@@ -144,6 +146,8 @@
 
             POSTAnswerData();
             GetOneWordsList(nowSelectWords);
+            document.getElementById("questionWord").classList.remove("questionWordAnimation");
+            document.getElementById("wordDiv").classList.remove("questionWordAnimation");
 
 
 
@@ -175,7 +179,7 @@
                 newList.appendChild(newBlock);
                 getListWordsID.appendChild(newList);
                 console.log(`Number is ${i}`);
-                document.getElementById(`WordsID_${i}`).setAttribute('onclick', `set_question(${i})`);
+                document.getElementById(`WordsID_${i}`).setAttribute('onclick', `set_question(${i}); wordAnimation();` );
                 
 
             }
@@ -216,6 +220,15 @@
             getAnswer.value = "";
             wordsID = wordsData[wordsIDNumber][0];
             getWordsIDName.innerHTML = wordsID;
+
+
+            document.getElementById("questionWord").style.visibility = "visible";
+            document.getElementById("selectWordsID").classList.remove("questionHeaderAnimation");
+            document.getElementById("wordDiv").classList.add("questionWordAnimation");
+            
+                 
+
+
         };
 
 
@@ -242,6 +255,25 @@
 
         };
 
+
+
+
+        function wordsListAnimation(){
+            if(window.innerWidth <= 800){
+                document.getElementById("selectWordsID").classList.add("questionHeaderAnimation");
+                document.getElementById("questionWord").classList.remove("questionWordAnimation");
+                document.getElementById("questionWord").style.visibility = "collapse"; 
+                answerLock_visibility(false,'collapse');           
+            }
+        };
+
+
+
+
+
+        function wordAnimation(){
+            document.getElementById("questionWord").classList.add("questionWordAnimation");
+        }
 
 
 
@@ -283,7 +315,8 @@
                 }
 
                 createListWordsID();
-                set_question(0);
+                set_question(0);               
+                wordsListAnimation();
                 
 
             })
@@ -355,6 +388,33 @@
         };
 
 
+
+
+
+
+
+
+
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+////////////////////////////////////////////////////   EVENT関連　　////////////////////////////////////////////////////
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+        function questionWordVisibility(){
+            if(window.innerWidth > 800){
+                document.getElementById("questionWord").style.visibility = "visible";
+            }else{
+                document.getElementById("questionWord").style.visibility = "collapse";
+                document.getElementById("selectWordsID").classList.add("questionHeaderAnimation");
+            };
+        };
+        window.onresize = questionWordVisibility;
 
 
 
