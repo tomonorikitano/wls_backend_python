@@ -2,21 +2,18 @@ h1{
     padding:1px;
     margin: 0px 5px;
     font-weight: bold;
-    font-family: "ＭＳ Ｐゴシック";
 }
 
 p{
     background: #000000;
     color: #ffffff;
     font-size: medium;
-    font-family: "ＭＳ Ｐゴシック";
 }
 
 #word, #result{
     margin-top: 20%;
     font-size: 60px;
     font-weight: bold;
-    font-family: "ＭＳ Ｐゴシック";
     
 }
 
@@ -25,14 +22,12 @@ header{
     height: 10%;
     font-size: 30px;
     font-weight: bold;
-    font-family: "ＭＳ Ｐゴシック";
 }
 
 
 #wordsID, #answer, #StartToCheck, #next, .backHomeButton{
     font-size: 30px;
     font-weight: bold;
-    font-family: "ＭＳ Ｐゴシック";  
 }
 
 
@@ -367,9 +362,8 @@ body{
     h1{
         padding:1px;
         margin: 0px 5px;
-        font-size: 200%;
+        font-size: 60%;
         font-weight: bold;
-        font-family: "ＭＳ Ｐゴシック";
     }
 
     h2{
@@ -387,8 +381,7 @@ body{
     }
     
     header{
-        height: 10%;
-        font-size: 100%;
+        height: 6%;
     }
 
     .backHomeButton{
