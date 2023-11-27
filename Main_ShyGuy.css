@@ -66,7 +66,6 @@ header{
     border-width: 1.5px;
     border-bottom: 1.5px solid#ffffff;
 }
-
 .questionHeader::after { /* 矢印の表示設定 */
     position: absolute;
     margin: auto;
@@ -147,7 +146,7 @@ header{
 #selectWordsID{
     overflow-y: scroll;
     top: 250px;
-    height: 600px;
+    bottom: 15px;
     position: absolute;
     right: 70%;
     left: 3%;
@@ -156,7 +155,7 @@ header{
 #questionWord{
     overflow-y: scroll;
     top: 250px;
-    height: 600px;
+    bottom: 15px;
     position: absolute;
     right: 5%;
     left: 35%;
@@ -289,44 +288,7 @@ body{
     
 }
 
-#output {
-    visibility: collapse;
-    position: fixed;
-    padding-left: 30px;
-    padding-right: 30px;
-    top: 22%;
-    margin: 10px 15px;
-    border-radius: 20px;
-    padding: 15px 30px;
-    background-color: whitesmoke;
-}
 
-.btn, #startBtn , .finish{
-    text-align: left;
-    font-family: "ＭＳ Ｐゴシック";
-    font-size: 50px;
-    font-weight: bold;
-    padding: 8px 20px;       /*余白を設定*/
-    margin: 10px 50px ; /*余白を作成*/
-    color: #244352;            /*文字の色*/
-    border-color: #9999ff;
-    border-radius: 10px;     /*角を丸める*/
-    border-width: 5px;
-    background: white;    /*ボタン色を設定*/
-}
-.btn{
-    padding-right: 40px;
-}
-#finished{
-    display: none;
-    position: fixed;
-    top: 30vw;
-}
-#ansrgn{
-    display: none;
-    position: fixed;
-    bottom: 5%;
-}
 
 #startBtn{
     /*background-image: url("/static/images/Nier.png") !important;*/
@@ -356,57 +318,40 @@ body{
 
 
 
-
 @media screen and (max-width: 800px){
-    h1 , #startBtn, .button_ctrl{
-        text-align: center;
+
+    #selectWordsID{
+        visibility: collapse;
+        position: absolute;
+        bottom: 15px;
+        width: 100%;
     }
-    .button_ctrl{
-        position: fixed;
-        bottom: 40%;
-        margin: 0px 0px;
-        left: 0;
+
+
+    .questionHeaderAnimation{
+        background-color: #ff9a6b;
+        visibility: visible !important;
+        animation-duration: 0.8s;
+        animation-name:wordsListslidein;
+        bottom: 15px;
+        width: 100%;
+    }
+
+
+    .questionWordAnimation{
+        animation-duration: 0.3s;
+        animation-name: wordSlidein;
+    }
+    
+    .questionHeader:active{
+        background:rgba(255, 255, 255, 0.5);
+        color: rgba(255, 131, 73, 0.5);    
+    }
+
+    #questionWord{
+        overflow-y:auto;
         right: 0;
-    }
-    #ansrgn{
-        text-align: center;
-        left: 0px;
-        right: 0px;
-    }
-    #output{
-        top: 19%;
-        text-align: center;
-        left: 0;
-        right: 0;
-    }
-    .btn{
-        text-align: center;
-        padding: 6px 20px;
-        padding-left: 20px;
-        padding-right: 20px;
-        margin: 1vw 1vw;
-        font-size: 6vw;
-        bottom: 8%;
-        left: 0px;
-        right: 0px;
-    }
-    .finish{
-        padding-left: 20px;
-        padding-right: 20px;
-        font-size: 6vw;
-    }
-    #finished{
-        text-align: center;
-        top: 50%;
-        left: 0px;
-        right: 0px;
-    }
-    .btnn{
-        font-size: 5vw;
-        margin: 10px 20px;
-    }
-    #closed{
-        top: 30vw;
+        left: 15px;
     }
 
     body{
@@ -414,5 +359,42 @@ body{
         background-size: cover;
         text-align: center;
     }
+    
+}
+
+
+
+
+
+
+
+
+
+@keyframes wordsListslidein {
+    from {
+        top: 200px;
+        bottom: 100%;
+        width: 100%;
+      }
+    
+      to {
+        top: 250px;
+        bottom: 15px;
+        width: 100%;
+      }
+    
+}
+
+
+@keyframes wordSlidein {
+    from {
+        left: 100%;
+        width: 300%;
+      }
+    
+      to {
+        left: 0%;
+        width: 100%;
+      }
     
 }
