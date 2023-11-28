@@ -315,11 +315,16 @@ body{
         visibility: collapse;
         position: absolute;
         bottom: 15px;
-        width: 100%;
+        left: 2.5%;
+        right: 2.5%;
     }
 
     #questionWord{
+        top: 125px;
         border-bottom: 1.5px solid#ffffff;
+        position: absolute;
+        left: 2.5%;
+        right: 2.5%;
     }
 
 
@@ -332,7 +337,6 @@ body{
         border-top: 1.5px solid#ffffff;
         border-bottom: 1.5px solid#ffffff;
         bottom: 15px;
-        width: 100%;
     }
 
 
@@ -375,14 +379,6 @@ body{
 
     #wordsIDName{
         margin-left: 54px;
-    }
-
-
-
-    #questionWord{
-        top: 125px;
-        right: 0;
-        left: 15px;
     }
 
     body{
@@ -464,8 +460,8 @@ body{
 
 @keyframes wordsListslidein {
     from {
-        right: 0%;
-        left: -100%;
+        right: 102.5%;
+        left: -97.5%;
         /*
         top: 100px;
         bottom: 100%;
@@ -474,13 +470,13 @@ body{
       }
 
       60% {
-        right: -5%;
-        left: 5%;
+        right: -2.5%;
+        left: 7.5%;
       }
     
       to {
-        right: 100%;
-        left: 0%;
+        right: 2.5%;
+        left: 2.5%;
         /*
         top: 125px;
         bottom: 15px;
@@ -493,16 +489,16 @@ body{
 
 @keyframes wordSlidein {
     from {
-        right: -100%;
-        left: 100%;
+        right: -97.5%;
+        left: 102.5%;
       }
       60% {
-        right: 5%;
-        left: -5%;
+        right: 7.5%;
+        left: -2.5%;
       }
       to {
-        right: 0%;
-        left: 0%;
+        right: 2.5%;
+        left: 2.5%;
       }
     
 }
