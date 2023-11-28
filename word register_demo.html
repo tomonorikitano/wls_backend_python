@@ -16,7 +16,13 @@
         <input type="text" id="id" name="id" required><br><br>
 
         <label for="item">Item:</label>
-        <input type="text" value=0 id="item" name="item" required><br><br>
+        <input type="text" value="noneItem" id="item" name="item" required><br><br>
+
+        <label for="mode">mode:</label>
+        <select name="mode" id="mode">
+            <option value="register">Register</option>
+            <option value="delete">Delete</option>
+        </select><br><br>
 
         <button type="button" id="submitButton">Submit</button>
     </form>
@@ -34,12 +40,14 @@
             const mean = document.getElementById('mean').value;
             const id = document.getElementById('id').value;
             const item = document.getElementById('item').value;
-            
+            const mode = document.getElementById('mode').value;
+
             const data = {
                 "word": word,
                 "meaning": mean,
                 "wordsID": id,
-                "item": item
+                "item": item,
+                "mode": mode
             };
 
             const param = {
