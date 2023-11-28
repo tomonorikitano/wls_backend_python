@@ -3,7 +3,7 @@
         
     <head>
         <meta charset="utf-8" name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-        <link rel="stylesheet" type="text/css" href="Main_ShyGuy.css"/>
+        <link rel="stylesheet" type="text/css" href="Main3.css"/>
         <title>WORD TEST</title>    
     </head>
 
@@ -19,6 +19,7 @@
             <button type="button"  class="backHomeButton" onclick="location.href='https://tomonorikitano.github.io/wls_backend_python/'">BACK HOME</button>
         </div>
         <main>
+            
             <div>
                 <section id="selectWordsID">
                     <ul id="listWordsID">
@@ -75,6 +76,7 @@
         let wordsData = [];//[['英語',[["red","赤"],["blue",'青']]],['算数',[["1+1","2"],["3*4",'12']]]];
         let problem_word ;
         let answer_mean ;
+        let memory_level ;
         let downloadedJsonDataWordsID;
         let wordsID;
         let nowSelectWords;
@@ -201,6 +203,8 @@
 
             problem_word = wordsData[wordsIDNumber][1][shuffle][0];
             answer_mean = wordsData[wordsIDNumber][1][shuffle][1];
+            memory_level = wordsData[wordsIDNumber][1][shuffle][2];
+            console.log(memory_level);
             if(oneBackSelectWords != null){
                 document.getElementById(oneBackSelectWords).classList.remove("wordsIDSelected");
             };
@@ -303,7 +307,8 @@
                     for(j = 0 ;j < word_mean[result.json_wordsID_list[i]].length; j++){
                         var a = word_mean[result.json_wordsID_list[i]][j].word;
                         var b = word_mean[result.json_wordsID_list[i]][j].meaning;
-                        words_array.push([a,b]);
+                        var c = word_mean[result.json_wordsID_list[i]][j].memorylevel;
+                        words_array.push([a,b,c]);
                     }
                     wordsData.push(
                         [result.json_wordsID_list[i].replace(".csv",""),words_array]
@@ -339,7 +344,8 @@
                 for(i = 0 ; i < word_mean[result.json_wordsID_list[wordsIDNumber]].length; i++){
                     var a = word_mean[result.json_wordsID_list[wordsIDNumber]][i].word;
                     var b = word_mean[result.json_wordsID_list[wordsIDNumber]][i].meaning;
-                    words_array.push([a,b]);
+                    var c = word_mean[result.json_wordsID_list[wordsIDNumber]][i].memorylevel;
+                    words_array.push([a,b,c]);
                 }
                 console.log(result.json_wordsID_list[wordsIDNumber].replace(".csv",""));
                 wordsData.splice( wordsIDNumber, 1,
@@ -365,7 +371,7 @@
 
             //JSONデータ作成
             let resultDataFile = {
-                "word": problem_word, "wordsID": wordsID, "result": point, "timestamp":new Date, "weight":0
+                "word": problem_word, "wordsID": wordsID, "result": point, "memorylevel": memory_level
             };
 
             const resultDataFileJSON = {
@@ -406,7 +412,8 @@
         function questionWordVisibility(){
             if(window.innerWidth > 800){
                 document.getElementById("questionWord").style.display = "block";
-            }else{
+                document.getElementById("questionWord").style.visibility = "visible";
+            }else if(window.innerWidth > 780 || window.innerWidth <= 800){
                 document.getElementById("questionWord").style.display = "none";
                 document.getElementById("selectWordsID").classList.add("questionHeaderAnimation");
             };
