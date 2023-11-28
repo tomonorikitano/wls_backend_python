@@ -3,7 +3,7 @@
         
     <head>
         <meta charset="utf-8" name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-        <link rel="stylesheet" type="text/css" href="Main3.css"/>
+        <link rel="stylesheet" type="text/css" href="Main_ShyGuy.css"/>
         <title>WORD TEST</title>    
     </head>
 
@@ -376,17 +376,15 @@
             };
 
             const resultDataFileJSON = {
-                method: "POST", body: JSON.stringify(resultDataFile)//, mode: "no-cors"
+                method: "POST", body: JSON.stringify(resultDataFile), mode: "no-cors"
             };
 
 
             console.log(resultDataFileJSON);
             console.log(JSON.stringify(resultDataFile));
             fetch("https://9h2caq2cuc.execute-api.ap-northeast-1.amazonaws.com/RightAndWrong_api/", resultDataFileJSON)
-                //.then(response => response.text())
-                .then(response => response.json())
-                .then(result => console.log(JSON.stringify(result)))
-                //.then(data => console.log(data))
+                .then(response => response.text())
+                .then(data => console.log(data))
                 .catch(error => console.error(error));
 
 
