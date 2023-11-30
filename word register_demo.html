@@ -59,7 +59,7 @@
             fetch("https://0ik4fbpqda.execute-api.ap-northeast-1.amazonaws.com/demonstration_ToS3/", param)
                 .then(response => response.json())
                 .then(result => {
-                    resultDiv.innerHTML = JSON.stringify(result);
+                    resultDiv.innerHTML = JSON.parse(result.body);
                 })
                 .catch(error => {
                     resultDiv.innerHTML = "Error: " + error.message;
@@ -68,3 +68,4 @@
     </script>
 </body>
 </html>
+
