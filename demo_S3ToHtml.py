@@ -12,7 +12,7 @@ s3 = boto3.client('s3')
 def lambda_handler(event, context):
 
     print('==== file list in bucket ====')
-    AWS_S3_BUCKET_NAME = 'kitano-5a-stu-hosei-ac-jp'
+    AWS_S3_BUCKET_NAME = 'xxxxxxxxxxxxxx'
     s3_resource = boto3.resource('s3')
     bucket = s3_resource.Bucket(AWS_S3_BUCKET_NAME)
     result = bucket.meta.client.list_objects(Bucket=bucket.name, Delimiter='/')
@@ -58,7 +58,7 @@ def lambda_handler(event, context):
         "json_wordsID_word_mean" : json_wordsID_word_mean
     }
     
-    print(json.dumps(json_IDlist_IdWordMean_data,indent=2,ensure_ascii=False))
+    #print(json.dumps(json_IDlist_IdWordMean_data,indent=2,ensure_ascii=False))
     
     return {
         'isBase64Encoded': False,
