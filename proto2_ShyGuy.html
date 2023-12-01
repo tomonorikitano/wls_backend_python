@@ -78,6 +78,7 @@
         let problem_word ;
         let answer_mean ;
         let memory_level ;
+        let shuffle ;
         let downloadedJsonDataWordsID;
         let wordsID;
         let nowSelectWords;
@@ -144,7 +145,8 @@
 
 
             POSTAnswerData();
-            GetOneWordsList(nowSelectWords);
+            //選択されている単語帳のすべての単語を取り直して更新している。
+            //GetOneWordsList(nowSelectWords);
             document.getElementById("questionWord").classList.remove("questionWordAnimation");
             document.getElementById("wordDiv").classList.remove("questionWordAnimation");
 
@@ -200,7 +202,7 @@
         //問題をランダムに選び抽出
         function set_question(wordsIDNumber){
 
-            let shuffle = Math.floor(Math.random() * (wordsData[wordsIDNumber][1].length));
+            shuffle = Math.floor(Math.random() * (wordsData[wordsIDNumber][1].length));
 
             problem_word = wordsData[wordsIDNumber][1][shuffle][0];
             answer_mean = wordsData[wordsIDNumber][1][shuffle][1];
@@ -365,13 +367,14 @@
 
 
 
+
                 //JSONでS3に送信
         function POSTAnswerData(){
 
 
 
             //JSONデータ作成
-            let resultDataFile = {
+            const resultDataFile = {
                 "word": problem_word, "wordsID": wordsID, "result": point, "memorylevel": memory_level
             };
 
@@ -383,10 +386,15 @@
             console.log(resultDataFileJSON);
             console.log(JSON.stringify(resultDataFile));
             fetch("https://9h2caq2cuc.execute-api.ap-northeast-1.amazonaws.com/RightAndWrong_api/", resultDataFileJSON)
-                .then(response => response.text())
-                .then(data => console.log(data))
-                .catch(error => console.error(error));
-
+                .then(response => {
+                    return response.json();
+                })
+                .then(result => {
+                    console.log(JSON.parse(result.body).new_memorylevel);
+                    wordsData[nowSelectWords][1][shuffle][2] = JSON.parse(result.body).new_memorylevel;
+                    console.log(`This is the changed memory : ${wordsData[nowSelectWords][1][shuffle][2]}`);
+                })
+                .catch(error => console.log(error));
 
 
         };
