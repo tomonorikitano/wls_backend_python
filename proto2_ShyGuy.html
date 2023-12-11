@@ -9,16 +9,39 @@
 
     <body>
         <header>
-            <h1>WORD BOOK QUESTION</h1>
+            <div class="menuButton cursorClick" onclick="menuBarSlideIn()"></div>
+            <h1 class="headerName">WORD BOOK QUESTION</h1>
         </header>
 
 
         
         <hr></hr>
-        <div class="backHome">
-            <button type="button"  class="backHomeButton" onclick="location.href='https://tomonorikitano.github.io/wls_backend_python/'">BACK HOME</button>
-        </div>
+
         <main>
+            <div id="menuBar" class="menuBarClass" >
+                <div class="menuOutButton cursorClick" onclick="menuBarSlideOut()"></div>
+                <div class="menuBarMenu">
+                    <div onclick="location.href='https://tomonorikitano.github.io/wls_backend_python/' " class="cursorClick">
+                        BACK HOME
+                    </div>
+                    <br>
+                    <div>
+                         MODE
+                        <br>
+                        <br>
+                        <div class="modeBar">
+                            <div>
+                                RANDOM
+                                <br>
+                                <br>
+                            </div>
+                            <div>
+                                MEMORY LEVEL
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
             
             <div>
                 <section id="selectWordsID">
@@ -36,7 +59,7 @@
                                 <h2 id="word"></h2>
                             </div>
                             <input type="text" id="answer">
-                            <button type="button" onclick="check();" id="StartToCheck">解答</button>
+                            <button type="button" onclick="check();" id="StartToCheck" class="cursorClick">解答</button>
                             <div id="word"></div>
                             <br>
                             <br>
@@ -44,7 +67,7 @@
                                 <div id="result"></div> 
                             </div>
                             <div class="divNext">
-                                <button type="button" onclick="next_question();" id="next" style="visibility: hidden;">次へ</button>
+                                <button type="button" onclick="next_question();" id="next" class="cursorClick" style="visibility: hidden;">次へ</button>
                             </div>
                             
                         </div>
@@ -139,8 +162,8 @@
             answerLock_visibility(true,'visible');
 
 
-            console.log(getAnswer.value);
-            console.log(problem_word,point,new Date);
+            //console.log(getAnswer.value);
+            //console.log(problem_word,point,new Date);
 
 
 
@@ -169,7 +192,7 @@
                 let newBlock = document.createElement("a");
                 let newBlockName = document.createElement("h3");
     
-                newList.classList.add("areaSelect");
+                newList.classList.add("areaSelect","cursorClick");
                 newBlock.classList.add('newBlock');
                 newList.id = `WordsID_${i}`;
                 console.log(wordsData[i][0]);
@@ -202,7 +225,9 @@
         //問題をランダムに選び抽出
         function set_question(wordsIDNumber){
 
-            shuffle = Math.floor(Math.random() * (wordsData[wordsIDNumber][1].length));
+            shuffle = shuffleQuestion(wordsIDNumber);
+
+            console.log(wordsData[wordsIDNumber]);
 
             problem_word = wordsData[wordsIDNumber][1][shuffle][0];
             answer_mean = wordsData[wordsIDNumber][1][shuffle][1];
@@ -246,6 +271,51 @@
 
 
 
+        //問題作成アルゴリズム
+        function shuffleQuestion(wordsIDNumber){
+            let a = wordsIDNumber;
+            let x = wordLottery(a);
+            console.log(`First is ${wordsData[a][1][x][2]}`);
+            if(wordsData[a][1][x][2] > 0){
+                x = wordLottery(a);
+                console.log(`Second is ${wordsData[a][1][x][2]}`);
+                if(wordsData[a][1][x][2] > 1){
+                    x = wordLottery(a);
+                    console.log(`Third is ${wordsData[a][1][x][2]}`);
+                    if(wordsData[a][1][x][2] > 2){
+                        x = wordLottery(a);
+                        console.log(`Fourth is ${wordsData[a][1][x][2]}`);
+                        if(wordsData[a][1][x][2] > 3){
+                            x = wordLottery(a);
+                            console.log(`Fifth is ${wordsData[a][1][x][2]}`);
+                            if(wordsData[a][1][x][2] > 4){
+                                x = wordLottery(a);
+                                console.log(`Sixth is ${wordsData[a][1][x][2]}`);
+                                if(wordsData[a][1][x][2] > 5){
+                                    x = wordLottery(a);
+                                    console.log(`First is ${wordsData[a][1][x][2]}`);
+                                };
+                            };
+                        };
+                    };
+                };
+            };
+            return x;
+        };
+
+
+
+
+
+        function wordLottery(wordsIDNumber){
+            var x = Math.floor(Math.random() * (wordsData[wordsIDNumber][1].length));
+            return x;
+        };
+
+
+
+
+
 
         //ボタンの機能停止回復、結果などのビジビリティ変更
         function answerLock_visibility(TrueOrFalse, whichVisibility){
@@ -262,6 +332,7 @@
 
 
 
+        //リストのアニメーションのオンオフ
         function wordsListAnimation(){
             if(window.innerWidth <= 800){
                 document.getElementById("selectWordsID").classList.add("questionHeaderAnimation");
@@ -275,8 +346,25 @@
 
 
 
+        //問題移行時のアニメーション追加
         function wordAnimation(){
             document.getElementById("questionWord").classList.add("questionWordAnimation");
+        }
+
+
+
+
+
+        function menuBarSlideIn(){
+            document.getElementById("menuBar").classList.add("menuBarSlideInAnimation");
+            document.getElementById("menuBar").classList.remove("menuBarClass");
+            document.getElementById("menuBar").classList.remove("menuBarSlideOutAnimation");
+        }
+
+        function menuBarSlideOut(){
+            document.getElementById("menuBar").classList.add("menuBarClass");
+            document.getElementById("menuBar").classList.add("menuBarSlideOutAnimation");
+            document.getElementById("menuBar").classList.remove("menuBarSlideInAnimation");
         }
 
 
@@ -379,7 +467,7 @@
             };
 
             const resultDataFileJSON = {
-                method: "POST", body: JSON.stringify(resultDataFile)
+                method: "POST", body: JSON.stringify(resultDataFile)//, mode: "no-cors"
             };
 
 
@@ -391,6 +479,7 @@
                 })
                 .then(result => {
                     console.log(JSON.parse(result.body).new_memorylevel);
+                    //console.log(result.body[22]);
                     wordsData[nowSelectWords][1][shuffle][2] = JSON.parse(result.body).new_memorylevel;
                     console.log(`This is the changed memory : ${wordsData[nowSelectWords][1][shuffle][2]}`);
                 })
