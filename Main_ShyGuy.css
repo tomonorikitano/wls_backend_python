@@ -23,6 +23,11 @@ p{
     color: #ffffff;
 }
 
+hr{
+    background-color: #ffffff;
+    border-color: #ffffff;
+}
+
 #word, #result{
     margin-top: 20%;
     font-size: 60px;
@@ -31,8 +36,13 @@ p{
 
 header{
     padding: none;
+    margin-left: 60px;
     height: 10%;
-    font-size: 30px;
+    font-size: 12px;
+}
+
+.cursorClick:hover{
+    cursor: pointer;
 }
 
 
@@ -150,7 +160,7 @@ header{
 
 #selectWordsID{
     overflow-y: scroll;
-    top: 250px;
+    top: 125px;
     bottom: 15px;
     position: absolute;
     right: 70%;
@@ -159,7 +169,7 @@ header{
 
 #questionWord{
     overflow-y: scroll;
-    top: 250px;
+    top: 125px;
     bottom: 15px;
     position: absolute;
     right: 5%;
@@ -284,14 +294,88 @@ header{
 
 
 body{
-    
     background-color: #ff9a6b;
     color: white;
     /*background-image: url("images/kirby-01-02.png") !important;*/
     background-size: cover;
     background-repeat: no-repeat;
-    
 }
+
+
+
+
+
+.menuButton{
+    position: fixed;
+    top: 8px;
+    left: 15px;
+    margin: 10px 0px 10px 0px;
+    width: 35px;
+    height: 15px;
+    border-top: 1.5px solid#ffffff;
+    border-bottom: 1.5px solid#ffffff;
+}
+.menuOutButton {
+    position: relative;
+    width: 60px;
+    height: 60px;
+}
+.menuOutButton::before, .menuOutButton::after { /* 共通設定 */
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 2px; /* 棒の幅（太さ） */
+    height: 50px; /* 棒の高さ */
+    background: #333;
+} 
+.menuOutButton::before {
+    transform: translate(-50%,-50%) rotate(45deg);
+}
+.menuOutButton::after {
+    transform: translate(-50%,-50%) rotate(-45deg);
+}
+
+#menuBar{   
+    color: #000000;
+    background-color: rgba(255, 255, 255, 0.5);
+    z-index: 1;
+    position: fixed;
+}
+.menuBarClass{
+    left: 0;
+    bottom: 100%;
+    height: 100vh;
+    width: 100vw;
+}
+.menuBarMenu{
+    position: relative;
+    top: 15%;
+    font-size: 2em;
+}
+
+.modeBar{
+    padding-left: 10px;
+    padding-bottom: 5px;
+}
+.menuBarSlideInAnimation{
+    text-align: center;
+    left: 0;
+    bottom: 0;
+    height: 100vh;
+    width: 100vw;
+    animation-duration: 0.4s;
+    animation-name: menuBarSlideIn;
+}
+.menuBarSlideOutAnimation{
+    animation-duration: 0.4s;
+    animation-name: menuBarSlideOut;
+}
+
+
+
+
+
 
 
 
@@ -311,7 +395,7 @@ body{
     }
 
     #selectWordsID{
-        top: 125px;
+        top: 80px;
         visibility: collapse;
         position: absolute;
         bottom: 15px;
@@ -320,7 +404,7 @@ body{
     }
 
     #questionWord{
-        top: 125px;
+        top: 80px;
         border-bottom: 1.5px solid#ffffff;
         position: absolute;
         left: 2.5%;
@@ -371,6 +455,7 @@ body{
     .questionHeader:hover{
         background:rgba(255, 255, 255, 0.3);
         color: rgba(255, 131, 73, 0.7);    
+        cursor: pointer;
     }
     .questionHeader:active{
         background:rgba(255, 255, 255, 0.5);
@@ -409,6 +494,7 @@ body{
     }
     
     header{
+        margin-left: 0;
         height: 6%;
     }
 
@@ -419,6 +505,10 @@ body{
     
     #wordsID, #answer, #StartToCheck, #next{
         font-size: 100%;
+    }
+
+    .headerName{
+        font-size: 20px;
     }
 
 
@@ -447,8 +537,18 @@ body{
     .questionHeader{
         border-top: 1.5px solid#ffffff;
     }
+
+
+    .menuButton{
+        top: 5px;
+    }
     
 }
+
+
+
+
+
 
 
 
@@ -462,11 +562,6 @@ body{
     from {
         right: 102.5%;
         left: -97.5%;
-        /*
-        top: 100px;
-        bottom: 100%;
-        width: 100%;
-        */
       }
 
       60% {
@@ -477,11 +572,6 @@ body{
       to {
         right: 2.5%;
         left: 2.5%;
-        /*
-        top: 125px;
-        bottom: 15px;
-        width: 100%;
-        */
       }
     
 }
@@ -501,4 +591,22 @@ body{
         left: 2.5%;
       }
     
+}
+
+@keyframes menuBarSlideIn {
+    from {
+        bottom:100%;
+    }
+    to {
+        bottom:0;
+    }
+}
+
+@keyframes menuBarSlideOut {
+    from {
+        bottom:0%;
+    }
+    to {
+        bottom:100%;
+    }
 }
