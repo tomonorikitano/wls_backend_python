@@ -539,6 +539,9 @@ body{
     }
 
 
+    .menuOutButton{
+        top: 45px;
+    }
     .menuButton{
         top: 5px;
     }
@@ -595,18 +598,18 @@ body{
 
 @keyframes menuBarSlideIn {
     from {
-        bottom:100%;
+        bottom:100vh;
     }
     to {
-        bottom:0;
+        bottom:0vh;
     }
 }
 
 @keyframes menuBarSlideOut {
     from {
-        bottom:0%;
+        bottom:0vh;
     }
     to {
-        bottom:100%;
+        bottom:100vh;
     }
 }
