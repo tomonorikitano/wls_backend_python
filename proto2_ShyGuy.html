@@ -10,7 +10,7 @@
     <body>
         <header>
             <div class="menuButton cursorClick" onclick="menuBarSlideIn()"></div>
-            <h1 class="headerName">WORD BOOK QUESTION</h1>
+            <h1 class="headerName" onclick="GetJsonFromLambda2()">WORD BOOK QUESTION</h1>
         </header>
 
 
@@ -107,6 +107,7 @@
         let nowSelectWords;
         let oneBackSelectWords;
         let point;
+        let whatIn;
 
         //定数
         //const getWordsID = document.getElementById('wordsID');
@@ -223,7 +224,9 @@
 
 
         //問題をランダムに選び抽出
-        function set_question(wordsIDNumber){
+        function set_question1(wordsIDNumber){
+            
+            console.log(`I want to see ${whatIn}`);
 
             shuffle = shuffleQuestion(wordsIDNumber);
 
@@ -264,6 +267,48 @@
 
 
 
+        function set_question(wordsIDNumber){
+            
+            console.log(`I want to see ${whatIn}`);
+
+            shuffle = shuffleQuestion(wordsIDNumber);
+
+            console.log(wordsData[wordsIDNumber]);
+
+            problem_word = wordsData[wordsIDNumber][1][memory_level][shuffle][0];
+            answer_mean = wordsData[wordsIDNumber][1][memory_level][shuffle][1];
+            console.log(`Memory_level is ${memory_level} , and Selected word question is ${wordsData[wordsIDNumber][1][memory_level][shuffle]}`);
+            if(oneBackSelectWords != null){
+                document.getElementById(oneBackSelectWords).classList.remove("wordsIDSelected");
+            };
+            
+            document.getElementById(`WordsID_${wordsIDNumber}`).classList.add("wordsIDSelected");
+
+            oneBackSelectWords = `WordsID_${wordsIDNumber}`;
+            nowSelectWords = wordsIDNumber;
+
+            getWord.innerHTML = problem_word;
+
+            answerLock_visibility(false,'collapse');
+            getAnswer.value = "";
+            wordsID = wordsData[wordsIDNumber][0];
+            getWordsIDName.innerHTML = wordsID;
+
+
+            document.getElementById("questionWord").style.visibility = "visible";
+            document.getElementById("questionWord").style.display = "block";
+            document.getElementById("selectWordsID").classList.remove("questionHeaderAnimation");
+            document.getElementById("wordDiv").classList.add("questionWordAnimation");
+            
+                 
+
+
+        };
+
+
+
+
+
         function next_question(){
             set_question(nowSelectWords);
         };
@@ -272,7 +317,7 @@
 
 
         //問題作成アルゴリズム
-        function shuffleQuestion(wordsIDNumber){
+        function shuffleQuestion1(wordsIDNumber){
             let a = wordsIDNumber;
             let x = wordLottery(a);
             console.log(`First is ${wordsData[a][1][x][2]}`);
@@ -300,6 +345,21 @@
                     };
                 };
             };
+            return x;
+        };
+
+
+
+
+
+        //問題作成アルゴリズム
+        function shuffleQuestion(wordsIDNumber){
+            let a = wordsIDNumber;
+            memory_level = Math.floor(Math.exp((Math.random()-1)*6)*7);
+            while(wordsData[a][1][memory_level].length < 1){
+                memory_level = Math.floor(Math.exp((Math.random()-1)*6)*7);
+            }
+            let x = Math.floor(Math.random() * (wordsData[a][1][memory_level].length));
             return x;
         };
 
@@ -386,7 +446,7 @@
 
 
         //単語帳のJSONファイルをダウンロード
-        function GetJsonFromLambda(){
+        function GetJsonFromLambda1(){
             fetch('https://mwlgt31iu3.execute-api.ap-northeast-1.amazonaws.com/demo_s3tohtml/')
             .then(response => {
                 return response.json();
@@ -406,6 +466,47 @@
                     );
                    
                 }
+
+                createListWordsID();
+                set_question(0);               
+                wordsListAnimation();
+                
+
+            })
+            .catch((e) => {
+                console.log(e);
+            })
+        };
+
+
+
+
+
+        //単語帳のJSONファイルをダウンロード
+        function GetJsonFromLambda(){
+            fetch('https://mwlgt31iu3.execute-api.ap-northeast-1.amazonaws.com/demo_s3tohtml/')
+            .then(response => {
+                return response.json();
+            })
+            .then(result => {
+                wordsData = [];
+                word_mean = result.json_wordsID_word_mean;
+                for(i = 0 ;i < result.json_wordsID_list.length; i++){
+                    var words_array = [[],[],[],[],[],[],[]];
+                    for(j = 0 ;j < word_mean[result.json_wordsID_list[i]].length; j++){
+                        var a = word_mean[result.json_wordsID_list[i]][j].word;
+                        var b = word_mean[result.json_wordsID_list[i]][j].meaning;
+                        var c = word_mean[result.json_wordsID_list[i]][j].item;
+                        var d = word_mean[result.json_wordsID_list[i]][j].memorylevel;
+                        words_array[d].push([a,b,c]);
+                    }
+                    wordsData.push(
+                        [result.json_wordsID_list[i].replace(".csv",""),words_array]
+                    );
+                   
+                }
+
+                console.log(wordsData);
 
                 createListWordsID();
                 set_question(0);               
@@ -457,7 +558,7 @@
 
 
                 //JSONでS3に送信
-        function POSTAnswerData(){
+        function POSTAnswerData1(){
 
 
 
@@ -482,6 +583,42 @@
                     //console.log(result.body[22]);
                     wordsData[nowSelectWords][1][shuffle][2] = JSON.parse(result.body).new_memorylevel;
                     console.log(`This is the changed memory : ${wordsData[nowSelectWords][1][shuffle][2]}`);
+                })
+                .catch(error => console.log(error));
+
+
+        };
+
+
+
+
+
+        function POSTAnswerData(){
+
+
+
+            //JSONデータ作成
+            const resultDataFile = {
+                "word": problem_word, "wordsID": wordsID, "result": point, "memorylevel": memory_level
+            };
+
+            const resultDataFileJSON = {
+                method: "POST", body: JSON.stringify(resultDataFile)//, mode: "no-cors"
+            };
+
+
+            console.log(resultDataFileJSON);
+            console.log(JSON.stringify(resultDataFile));
+            fetch("https://9h2caq2cuc.execute-api.ap-northeast-1.amazonaws.com/RightAndWrong_api/", resultDataFileJSON)
+                .then(response => {
+                    return response.json();
+                })
+                .then(result => {
+                    console.log(JSON.parse(result.body).new_memorylevel);
+                    //console.log(result.body[22]);
+                    wordsData[nowSelectWords][1][JSON.parse(result.body).new_memorylevel].push(wordsData[nowSelectWords][1][memory_level][shuffle]);
+                    wordsData[nowSelectWords][1][memory_level].splice(shuffle,1);
+                    console.log(`This is the changed memory : ${wordsData[nowSelectWords][1][JSON.parse(result.body).new_memorylevel]}`);
                 })
                 .catch(error => console.log(error));
 
