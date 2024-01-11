@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="utf-8">
+    <title>Send Data to Lambda</title>
+</head>
+<body>
+    <form id="myForm">
+        <label for="word">Word:</label>
+        <input type="text" id="word" name="word" required><br><br>
+        
+        <label for="mean">Meaning:</label>
+        <input type="text" id="mean" name="mean" required><br><br>
+
+        <label for="id">ID:</label>
+        <input type="text" id="id" name="id" required><br><br>
+
+        <label for="item">Item:</label>
+        <input type="file" id="item" name="item"accept="image/png">
+        <br><br>
+
+        <label for="mode">mode:</label>
+        <select name="mode" id="mode">
+            <option value="register">Register</option>
+            <option value="delete">Delete</option>
+            <option value="delete all">Delete all</option>
+        </select><br><br>
+
+        <button type="button" id="submitButton">Submit</button>
+    </form>
+
+    <div id="result"></div>
+    <div id="imageContainer"></div>
+
+    <script>
+        const button = document.getElementById('submitButton');
+        const resultDiv = document.getElementById('result');
+
+        button.addEventListener('click', setData);
+
+        function setData() {
+            if(item.files.length > 0){
+                const inputElement = document.getElementById('item');
+                const file = inputElement.files[0];
+                
+                const word = document.getElementById('word').value;
+                const mean = document.getElementById('mean').value;
+                const id = document.getElementById('id').value;
+                //const item = document.getElementById('item').value;
+                const mode = document.getElementById('mode').value;
+                
+                const reader = new FileReader();
+                reader.onload = function(e){
+
+                    const data = {
+                        "word": word,
+                        "meaning": mean,
+                        "wordsID": id,
+                        "item": e.target.result,
+                        "mode": mode
+                    };
+
+                    sendDataToLambda(data);
+                }
+                reader.readAsDataURL(file);
+
+            }else{
+                const word = document.getElementById('word').value;
+                const mean = document.getElementById('mean').value;
+                const id = document.getElementById('id').value;
+                const item = 'noneItem';
+                const mode = document.getElementById('mode').value;
+
+                const data = {
+                    "word": word,
+                    "meaning": mean,
+                    "wordsID": id,
+                    "item": item,
+                    "mode": mode
+                }
+                
+                sendDataToLambda(data);
+            }
+
+        }
+
+        function sendDataToLambda(dataset){
+            console.log(dataset);
+            
+            const param = {
+                method: "POST",
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(dataset)
+            };
+
+            fetch("https://0ik4fbpqda.execute-api.ap-northeast-1.amazonaws.com/demonstration_ToS3/", param)
+                .then(response => response.json())
+                .then(result => {
+                    jsonstr = JSON.stringify(result.body);
+                    
+                    console.log(JSON.parse(jsonstr));
+                    displayImage(JSON.parse(jsonstr).item_url)
+                    resultDiv.innerHTML = JSON.parse(jsonstr).res;
+                })
+                .catch(error => {
+                    resultDiv.innerHTML = "Error: " + error.message;
+                });
+        }
+
+        function displayImage(imageUrl) {
+            // 画像を表示するためのimg要素を作成
+            const imageElement = document.createElement('img');
+            imageElement.src = imageUrl;
+            imageElement.alt = 'Uploaded Image';
+
+            // 画像を表示するコンテナに追加
+            const imageContainer = document.getElementById('imageContainer');
+            imageContainer.innerHTML = '';  // 既存の要素をクリア
+            imageContainer.appendChild(imageElement);
+        }
+    </script>
+</body>
+</html>
+
