@@ -30,18 +30,25 @@
                         <br>
                         <br>
                         <div class="modeBar">
-                            <div>
+                            <div class="cursorClick" onclick="questionModeChange(1)">
                                 RANDOM
                                 <br>
                                 <br>
                             </div>
-                            <div>
+                            <div class="cursorClick" onclick="questionModeChange(2)">
                                 MEMORY LEVEL
+                                <br>
+                                <br>
+                            </div>
+                            <div class="cursorClick">
+                                ONE WORD DICT
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
+
+            <div id="modePlot"></div>
             
             <div>
                 <section id="selectWordsID">
@@ -57,6 +64,9 @@
                             <br>
                             <div id="wordDiv">
                                 <h2 id="word"></h2>
+                            </div>
+                            <div id="imageDiv">
+                                <img src="" style="display: collapse;" id="imagePlot">
                             </div>
                             <input type="text" id="answer">
                             <button type="button" onclick="check();" id="StartToCheck" class="cursorClick">解答</button>
@@ -101,6 +111,7 @@
         let problem_word ;
         let answer_mean ;
         let memory_level ;
+        let word_image = null;
         let shuffle ;
         let downloadedJsonDataWordsID;
         let wordsID;
@@ -108,6 +119,8 @@
         let oneBackSelectWords;
         let point;
         let whatIn;
+        let questionMode = "MEMORY LEVEL";
+        let cooltimeWord = [];
 
         //定数
         //const getWordsID = document.getElementById('wordsID');
@@ -121,6 +134,9 @@
         const getAreaSelect = document.getElementsByClassName("areaSelect");        
         const getNewBlock = document.getElementsByClassName("newBlock");
         const getWordsIDName = document.getElementById("wordsIDName");
+        const getModePlot = document.getElementById("modePlot");
+        const getImagePlot = document.getElementById("imagePlot");
+        const getImageDiv = document.getElementById("imageDiv");
 
 
 
@@ -143,74 +159,51 @@
 
 
 
-        //採点
-        function check(){
-
-                        
-            if(getAnswer.value == answer_mean){
-                getResult.innerHTML=`正解!! （答え：${answer_mean}）`;point = "correct";
-            }
-
-            else if(getAnswer.value == ""){
-                getResult.innerHTML=`無回答 （答え：${answer_mean}）`;point = "noAnswer";
-            }
-
-            else{
-                getResult.innerHTML=`不正解 （答え：${answer_mean}）`;point = "incorrect";
-            }            
-
-
-            answerLock_visibility(true,'visible');
-
-
-            //console.log(getAnswer.value);
-            //console.log(problem_word,point,new Date);
-
-
-
-            POSTAnswerData();
-            //選択されている単語帳のすべての単語を取り直して更新している。
-            //GetOneWordsList(nowSelectWords);
-            document.getElementById("questionWord").classList.remove("questionWordAnimation");
-            document.getElementById("wordDiv").classList.remove("questionWordAnimation");
-
-
-
-        };
-
-
-
-
-
-
         //単語帳リストの作成
         function createListWordsID(){
-            console.log(wordsData);
+
+
+            //単語帳の一覧を作成
             for(i=0;i<wordsData.length;i++){
 
                 
+                //htmlの新しい要素を作成
                 let newList = document.createElement("li");
                 let newBlock = document.createElement("a");
                 let newBlockName = document.createElement("h3");
-    
+
+
+                //新要素にクラスを追加
                 newList.classList.add("areaSelect","cursorClick");
                 newBlock.classList.add('newBlock');
+
+
+                //単語帳に順番にID付け
                 newList.id = `WordsID_${i}`;
-                console.log(wordsData[i][0]);
+
 
                 newBlockName.innerHTML = wordsData[i][0];
 
+
+                //親要素と子要素の関係を設定
                 newBlock.appendChild(newBlockName);
                 newList.appendChild(newBlock);
                 getListWordsID.appendChild(newList);
-                console.log(`Number is ${i}`);
+
+
+                //作成したリストにクリック機能を追加
                 document.getElementById(`WordsID_${i}`).setAttribute('onclick', `set_question(${i}); wordAnimation();` );
+
+
+                console.log(wordsData[i][0]);
+                console.log(`Number is ${i}`);
                 
 
             }
 
-            //getWord.innerHTML = problem_word;
-            //getWord.style.visibility = 'visible';
+
+            console.log(wordsData);
+            console.log("function createListWordsID() 終了");
 
 
         };
@@ -225,30 +218,35 @@
 
         //問題をランダムに選び抽出
         function set_question1(wordsIDNumber){
-            
-            console.log(`I want to see ${whatIn}`);
 
+
+            //単語帳の選択が変更されたか確認
+            if(oneBackSelectWords != null){
+                document.getElementById(oneBackSelectWords).classList.remove("wordsIDSelected");
+            }
+
+            if(oneBackSelectWords != `WordsID_${wordsIDNumber}`){
+
+                document.getElementById(`WordsID_${wordsIDNumber}`).classList.add("wordsIDSelected");
+                oneBackSelectWords = `WordsID_${wordsIDNumber}`;          
+                nowSelectWords = wordsIDNumber;
+
+            }
+            
+
+            //出題問題の設定
             shuffle = shuffleQuestion(wordsIDNumber);
 
-            console.log(wordsData[wordsIDNumber]);
 
             problem_word = wordsData[wordsIDNumber][1][shuffle][0];
             answer_mean = wordsData[wordsIDNumber][1][shuffle][1];
             memory_level = wordsData[wordsIDNumber][1][shuffle][2];
-            console.log(memory_level);
-            if(oneBackSelectWords != null){
-                document.getElementById(oneBackSelectWords).classList.remove("wordsIDSelected");
-            };
-            
-            document.getElementById(`WordsID_${wordsIDNumber}`).classList.add("wordsIDSelected");
 
-            oneBackSelectWords = `WordsID_${wordsIDNumber}`;
-            nowSelectWords = wordsIDNumber;
 
             getWord.innerHTML = problem_word;
-
-            answerLock_visibility(false,'collapse');
             getAnswer.value = "";
+
+            
             wordsID = wordsData[wordsIDNumber][0];
             getWordsIDName.innerHTML = wordsID;
 
@@ -257,8 +255,13 @@
             document.getElementById("questionWord").style.display = "block";
             document.getElementById("selectWordsID").classList.remove("questionHeaderAnimation");
             document.getElementById("wordDiv").classList.add("questionWordAnimation");
+
+
+            answerLock_visibility(false,'collapse');
             
-                 
+            
+            console.log(wordsData[wordsIDNumber]);
+            console.log(memory_level);
 
 
         };
@@ -267,31 +270,48 @@
 
 
 
+        //問題をランダムに選び抽出
         function set_question(wordsIDNumber){
+
             
-            console.log(`I want to see ${whatIn}`);
 
-            shuffle = shuffleQuestion(wordsIDNumber);
-
-            console.log(wordsData[wordsIDNumber]);
-
-            problem_word = wordsData[wordsIDNumber][1][memory_level][shuffle][0];
-            answer_mean = wordsData[wordsIDNumber][1][memory_level][shuffle][1];
-            console.log(`Memory_level is ${memory_level} , and Selected word question is ${wordsData[wordsIDNumber][1][memory_level][shuffle]}`);
+            //単語帳の選択が変更されたか確認
+            console.log(oneBackSelectWords)
             if(oneBackSelectWords != null){
                 document.getElementById(oneBackSelectWords).classList.remove("wordsIDSelected");
-            };
+            }
             
             document.getElementById(`WordsID_${wordsIDNumber}`).classList.add("wordsIDSelected");
 
-            oneBackSelectWords = `WordsID_${wordsIDNumber}`;
-            nowSelectWords = wordsIDNumber;
+            if(oneBackSelectWords != `WordsID_${wordsIDNumber}`){
+
+                cooltimeLength(wordsIDNumber);
+
+                oneBackSelectWords = `WordsID_${wordsIDNumber}`;          
+                nowSelectWords = wordsIDNumber;
+
+            }
+
+
+            //出題問題の設定
+            shuffle = shuffleQuestion(wordsIDNumber);
+
+
+            problem_word = wordsData[wordsIDNumber][1][memory_level][shuffle][0];
+            answer_mean = wordsData[wordsIDNumber][1][memory_level][shuffle][1];
+            word_image = wordsData[wordsIDNumber][1][memory_level][shuffle][2];
+
+
+            if(typeof word_image === "undefined"){
+                word_image = null;
+            }
+
+
+            wordsID = wordsData[wordsIDNumber][0];
+
 
             getWord.innerHTML = problem_word;
-
-            answerLock_visibility(false,'collapse');
             getAnswer.value = "";
-            wordsID = wordsData[wordsIDNumber][0];
             getWordsIDName.innerHTML = wordsID;
 
 
@@ -299,8 +319,61 @@
             document.getElementById("questionWord").style.display = "block";
             document.getElementById("selectWordsID").classList.remove("questionHeaderAnimation");
             document.getElementById("wordDiv").classList.add("questionWordAnimation");
+
+            console.log(word_image);
+
+
+            if(word_image != null && word_image != "noneItem"){
+                getImagePlot.setAttribute("src",`${word_image}`);
+                getImageDiv.style.display = "block";
+                getImageDiv.style.visibility = "visible";
+            } else {
+                getImagePlot.setAttribute("src",``);
+                getImageDiv.style.display = "collapse";
+                getImageDiv.style.visibility = "hidden";
+            }
+            
+
+            answerLock_visibility(false,'collapse');
             
                  
+            console.log(wordsData[wordsIDNumber]);
+            console.log(`Memory_level is ${memory_level} , and Selected word question is ${wordsData[wordsIDNumber][1][memory_level][shuffle]}`);
+            console.log(`function set_question(${wordsIDNumber}) 終了`);
+
+
+        };
+
+
+
+
+
+        function cooltimeLength(wordsIDNumber){
+
+            let countWord = 0;    
+
+            for(i = 0; i < cooltimeWord.length; i++){
+                if(cooltimeWord[i] != "a"){
+                    //console.log(wordsData[nSW][1][cooltimeWord[0][0]]);
+                    //クールタイムの終わった単語を戻す
+                    wordsData[nowSelectWords][1][cooltimeWord[i][0]].push(cooltimeWord[i][1]);
+                    //console.log(`reflesh word ${wordsData[nSW][1][cooltimeWord[0][0]]}`);
+                }
+            }
+
+            cooltimeWord = [];
+
+            for(i = 0; i < 7; i++){
+                countWord += wordsData[wordsIDNumber][1][i].length;
+            }
+            
+            for(i = 1; i < countWord/5; i++){
+                cooltimeWord.push("a");
+            }
+            
+
+            console.log(`I changed cooltimeWord ${cooltimeWord}`);
+            console.log("cooltimeLength() 終了");
 
 
         };
@@ -318,6 +391,8 @@
 
         //問題作成アルゴリズム
         function shuffleQuestion1(wordsIDNumber){
+
+
             let a = wordsIDNumber;
             let x = wordLottery(a);
             console.log(`First is ${wordsData[a][1][x][2]}`);
@@ -345,7 +420,14 @@
                     };
                 };
             };
+
+
+            console.log(`function shuffleQuestion(${wordsIDNumber}) 終了`);
+
+
             return x;
+
+            
         };
 
 
@@ -354,22 +436,114 @@
 
         //問題作成アルゴリズム
         function shuffleQuestion(wordsIDNumber){
+
+
+            let x;
             let a = wordsIDNumber;
-            memory_level = Math.floor(Math.exp((Math.random()-1)*6)*7);
-            while(wordsData[a][1][memory_level].length < 1){
-                memory_level = Math.floor(Math.exp((Math.random()-1)*6)*7);
+
+
+            //memory_level = Math.floor(Math.exp((Math.random()-1)*6)*7);
+            if(questionMode == 'RANDOM'){
+                console.log(questionMode);
+                memory_level =  Math.floor(Math.random() * (wordsData[a][1].length));
+
+                while(wordsData[a][1][memory_level].length < 1){
+                    //memory_level = Math.floor(Math.exp((Math.random()-1)*6)*7);
+                    memory_level =  Math.floor(Math.random() * (wordsData[a][1].length));
+
+                }
             }
-            let x = Math.floor(Math.random() * (wordsData[a][1][memory_level].length));
+
+
+            if(questionMode == 'MEMORY LEVEL'){
+                console.log(questionMode);
+                memory_level =  Math.floor((7*Math.log10(2)-Math.log10(-127*(Math.random()-128/127)))/Math.log10(2));
+
+                while(wordsData[a][1][memory_level].length < 1){
+                    //memory_level = Math.floor(Math.exp((Math.random()-1)*6)*7);
+                    memory_level =  Math.floor((7*Math.log10(2)-Math.log10(-127*(Math.random()-128/127)))/Math.log10(2));
+
+                }
+            }
+
+
+            getModePlot.innerHTML=`MODE：${questionMode}`;
+
+
+            x = Math.floor(Math.random() * (wordsData[a][1][memory_level].length));
+
+
+            console.log(`function shuffleQuestion(${wordsIDNumber}) 終了`);
+
+
             return x;
+
+
         };
 
 
 
 
 
+        //単語抽選
         function wordLottery(wordsIDNumber){
-            var x = Math.floor(Math.random() * (wordsData[wordsIDNumber][1].length));
+            let x = Math.floor(Math.random() * (wordsData[wordsIDNumber][1].length));
+            console.log(`function wordLottery(${wordsIDNumber}) 終了`);
             return x;
+        };
+        
+
+
+
+
+        //採点
+        function check(){
+
+                        
+            //正誤判定
+            if(getAnswer.value == answer_mean){
+                getResult.innerHTML=`正解!! （答え：${answer_mean}）`;point = "correct";
+            }
+
+            else if(getAnswer.value == ""){
+                getResult.innerHTML=`無回答 （答え：${answer_mean}）`;point = "noAnswer";
+            }
+
+            else{
+                getResult.innerHTML=`不正解 （答え：${answer_mean}）`;point = "incorrect";
+            }   
+            
+
+            //回答結果の送信
+            POSTAnswerData();         
+
+
+            //選択されている単語帳のすべての単語を取り直して更新している。
+            //GetOneWordsList(nowSelectWords);
+
+
+            answerLock_visibility(true,'visible');
+
+
+            //アニメーションクラスの取り消し
+            document.getElementById("questionWord").classList.remove("questionWordAnimation");
+            document.getElementById("wordDiv").classList.remove("questionWordAnimation");
+
+
+            console.log("function check() 終了")
+
+
+        };
+
+
+
+
+
+
+        function questionModeChange(modeNumber){
+            if(modeNumber == 1){questionMode = "RANDOM";}
+            if(modeNumber == 2){questionMode = "MEMORY LEVEL";}
+            getModePlot.innerHTML=`MODE：${questionMode}`;
         };
 
 
@@ -380,6 +554,7 @@
         //ボタンの機能停止回復、結果などのビジビリティ変更
         function answerLock_visibility(TrueOrFalse, whichVisibility){
 
+
             getStartCheck.disabled = TrueOrFalse;
             getAnswer.disabled = TrueOrFalse;
 
@@ -387,7 +562,29 @@
             getResult.style.visibility= whichVisibility;
             getNext.style.visibility = whichVisibility;
 
+
+            console.log(`answerLock_visibility(${TrueOrFalse, whichVisibility}) 終了`);
+
+
         };
+
+
+
+
+
+
+
+
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+//////////////////////////////////////////////   アニメーション制御関連　　//////////////////////////////////////////////
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 
 
 
@@ -398,6 +595,8 @@
                 document.getElementById("selectWordsID").classList.add("questionHeaderAnimation");
                 document.getElementById("questionWord").classList.remove("questionWordAnimation");
                 document.getElementById("questionWord").style.visibility = "collapse"; 
+                getImageDiv.style.display = "collapse";
+                getImageDiv.style.visibility = "hidden";
                 answerLock_visibility(false,'collapse');           
             }
         };
@@ -415,6 +614,7 @@
 
 
 
+        //メニューバーアニメーションのオンオフ
         function menuBarSlideIn(){
             document.getElementById("menuBar").classList.add("menuBarSlideInAnimation");
             document.getElementById("menuBar").classList.remove("menuBarClass");
@@ -447,12 +647,18 @@
 
         //単語帳のJSONファイルをダウンロード
         function GetJsonFromLambda1(){
+
+
             fetch('https://mwlgt31iu3.execute-api.ap-northeast-1.amazonaws.com/demo_s3tohtml/')
             .then(response => {
                 return response.json();
             })
             .then(result => {
+
+                
                 word_mean = result.json_wordsID_word_mean;
+
+
                 for(i = 0 ;i < result.json_wordsID_list.length; i++){
                     var words_array = [];
                     for(j = 0 ;j < word_mean[result.json_wordsID_list[i]].length; j++){
@@ -463,19 +669,24 @@
                     }
                     wordsData.push(
                         [result.json_wordsID_list[i].replace(".csv",""),words_array]
-                    );
-                   
+                    );                   
                 }
+
 
                 createListWordsID();
                 set_question(0);               
                 wordsListAnimation();
+
+
+                console.log("GetJsonFromLambda() 終了")
                 
 
             })
             .catch((e) => {
                 console.log(e);
             })
+
+
         };
 
 
@@ -484,39 +695,51 @@
 
         //単語帳のJSONファイルをダウンロード
         function GetJsonFromLambda(){
+
+
             fetch('https://mwlgt31iu3.execute-api.ap-northeast-1.amazonaws.com/demo_s3tohtml/')
             .then(response => {
                 return response.json();
             })
             .then(result => {
+
+                
                 wordsData = [];
                 word_mean = result.json_wordsID_word_mean;
+
+
+                //単語帳の作成
                 for(i = 0 ;i < result.json_wordsID_list.length; i++){
                     var words_array = [[],[],[],[],[],[],[]];
                     for(j = 0 ;j < word_mean[result.json_wordsID_list[i]].length; j++){
                         var a = word_mean[result.json_wordsID_list[i]][j].word;
                         var b = word_mean[result.json_wordsID_list[i]][j].meaning;
-                        var c = word_mean[result.json_wordsID_list[i]][j].item;
+                        var c = word_mean[result.json_wordsID_list[i]][j].ItemKey;
                         var d = word_mean[result.json_wordsID_list[i]][j].memorylevel;
                         words_array[d].push([a,b,c]);
                     }
                     wordsData.push(
                         [result.json_wordsID_list[i].replace(".csv",""),words_array]
                     );
-                   
                 }
+
 
                 console.log(wordsData);
 
                 createListWordsID();
                 set_question(0);               
                 wordsListAnimation();
+
+
+                console.log("GetJsonFromLambda() 終了");
                 
 
             })
             .catch((e) => {
                 console.log(e);
             })
+
+
         };
 
 
@@ -561,12 +784,10 @@
         function POSTAnswerData1(){
 
 
-
             //JSONデータ作成
             const resultDataFile = {
                 "word": problem_word, "wordsID": wordsID, "result": point, "memorylevel": memory_level
             };
-
             const resultDataFileJSON = {
                 method: "POST", body: JSON.stringify(resultDataFile)//, mode: "no-cors"
             };
@@ -574,6 +795,8 @@
 
             console.log(resultDataFileJSON);
             console.log(JSON.stringify(resultDataFile));
+
+
             fetch("https://9h2caq2cuc.execute-api.ap-northeast-1.amazonaws.com/RightAndWrong_api/", resultDataFileJSON)
                 .then(response => {
                     return response.json();
@@ -593,32 +816,61 @@
 
 
 
+        //JSONでS3に送信
         function POSTAnswerData(){
 
+
+            let pw = problem_word;
+            let wI = wordsID;
+            let p = point;
+            let ml = memory_level;
+            let nSW = nowSelectWords;
+            let s = shuffle;
 
 
             //JSONデータ作成
             const resultDataFile = {
-                "word": problem_word, "wordsID": wordsID, "result": point, "memorylevel": memory_level
+                "word": pw, "wordsID": wI, "result": p, "memorylevel": ml
             };
-
             const resultDataFileJSON = {
                 method: "POST", body: JSON.stringify(resultDataFile)//, mode: "no-cors"
             };
 
 
             console.log(resultDataFileJSON);
-            console.log(JSON.stringify(resultDataFile));
             fetch("https://9h2caq2cuc.execute-api.ap-northeast-1.amazonaws.com/RightAndWrong_api/", resultDataFileJSON)
                 .then(response => {
                     return response.json();
                 })
                 .then(result => {
-                    console.log(JSON.parse(result.body).new_memorylevel);
-                    //console.log(result.body[22]);
-                    wordsData[nowSelectWords][1][JSON.parse(result.body).new_memorylevel].push(wordsData[nowSelectWords][1][memory_level][shuffle]);
-                    wordsData[nowSelectWords][1][memory_level].splice(shuffle,1);
-                    console.log(`This is the changed memory : ${wordsData[nowSelectWords][1][JSON.parse(result.body).new_memorylevel]}`);
+
+
+                    console.log(`New memory level I get from Lambda is ${JSON.parse(result.body).new_memorylevel}`);
+                    console.log(cooltimeWord);
+
+
+                    //出題した問題にクールタイムを設け、クールタイムが終わった単語を戻す
+                    //出題した問題をクールタイムへ
+                    cooltimeWord.push([JSON.parse(result.body).new_memorylevel, wordsData[nSW][1][ml][s]]);
+                    //出題した問題を単語リストから削除
+                    wordsData[nSW][1][ml].splice(s,1);
+                    if(cooltimeWord[0] != "a"){
+                        //console.log(wordsData[nSW][1][cooltimeWord[0][0]]);
+                        //クールタイムの終わった単語を戻す
+                        wordsData[nSW][1][cooltimeWord[0][0]].push(cooltimeWord[0][1]);
+                        //console.log(`reflesh word ${wordsData[nSW][1][cooltimeWord[0][0]]}`);
+                    }
+                    //戻し終わった単語をクールタイムから削除
+                    cooltimeWord.splice(0, 1);
+
+
+                    //console.log(cooltimeWord);
+                    //console.log(`This is the changed memory : ${wordsData[nowSelectWords][1][JSON.parse(result.body).new_memorylevel]}`);
+
+
+                    console.log("POSTAnswerData() 終了");
+
+
                 })
                 .catch(error => console.log(error));
 
@@ -645,6 +897,8 @@
 
 
         function questionWordVisibility(){
+
+
             if(window.innerWidth > 800){
                 document.getElementById("questionWord").style.display = "block";
                 document.getElementById("questionWord").style.visibility = "visible";
@@ -652,7 +906,11 @@
                 document.getElementById("questionWord").style.display = "none";
                 document.getElementById("selectWordsID").classList.add("questionHeaderAnimation");
             };
+
+
         };
+
+
         window.onresize = questionWordVisibility;
 
 
