@@ -376,6 +376,15 @@ body{
 
 
 
+#imagePlot{
+    height: 45vh;
+    object-fit: cover;
+    padding-bottom: 10px;
+}
+
+
+
+
 
 
 
@@ -545,6 +554,17 @@ body{
     .menuButton{
         top: 5px;
     }
+
+
+
+
+    #imagePlot{
+        height: 25vh;
+        text-align: center;
+        margin: auto;
+        padding-bottom: 10px;
+    }
+
     
 }
 
