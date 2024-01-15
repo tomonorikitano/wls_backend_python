@@ -354,9 +354,14 @@ body{
     font-size: 2em;
 }
 
+.modeDiv{
+    background:rgba(55, 99, 241, 0.3);
+}
+
 .modeBar{
     padding-left: 10px;
     padding-bottom: 5px;
+    background:rgba(255, 255, 255, 0.3);
 }
 .menuBarSlideInAnimation{
     text-align: center;
@@ -386,6 +391,14 @@ body{
 
 
 
+#modePlot{
+    font-size: 20px;
+    text-align: right;
+}
+
+
+
+
 
 
 
@@ -404,7 +417,7 @@ body{
     }
 
     #selectWordsID{
-        top: 80px;
+        top: 85px;
         visibility: collapse;
         position: absolute;
         bottom: 15px;
@@ -413,7 +426,7 @@ body{
     }
 
     #questionWord{
-        top: 80px;
+        top: 85px;
         border-bottom: 1.5px solid#ffffff;
         position: absolute;
         left: 2.5%;
@@ -565,6 +578,14 @@ body{
         padding-bottom: 10px;
     }
 
+    #modePlot{
+        font-size: 18px;
+        position: absolute;
+        right: 0%;
+        left: 0%;
+        top: 54px;
+        text-align: center;
+    }
     
 }
 
