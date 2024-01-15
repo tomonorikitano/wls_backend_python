@@ -10,7 +10,7 @@
     <body>
         <header>
             <div class="menuButton cursorClick" onclick="menuBarSlideIn()"></div>
-            <h1 class="headerName" onclick="GetJsonFromLambda2()">WORD BOOK QUESTION</h1>
+            <h1 class="headerName">WORD BOOK QUESTION</h1>
         </header>
 
 
@@ -25,24 +25,21 @@
                         BACK HOME
                     </div>
                     <br>
-                    <div>
-                         MODE
-                        <br>
-                        <br>
+                    <div class="modeDiv">
+                        <div>
+                            MODE
+                        </div>
                         <div class="modeBar">
-                            <div class="cursorClick" onclick="questionModeChange(1)">
+                            <br>
+                            <div id="randomMode"  class="cursorClick" onclick="questionModeChange(1)">
                                 RANDOM
                                 <br>
                                 <br>
                             </div>
-                            <div class="cursorClick" onclick="questionModeChange(2)">
+                            <div id= "memoryLevelMode" class="cursorClick" onclick="questionModeChange(2)">
                                 MEMORY LEVEL
-                                <br>
-                                <br>
                             </div>
-                            <div class="cursorClick">
-                                ONE WORD DICT
-                            </div>
+                            <br>
                         </div>
                     </div>
                 </div>
@@ -137,6 +134,8 @@
         const getModePlot = document.getElementById("modePlot");
         const getImagePlot = document.getElementById("imagePlot");
         const getImageDiv = document.getElementById("imageDiv");
+        const getRandomMode = document.getElementById("randomMode");
+        const getMemoryLevelMode = document.getElementById("memoryLevelMode");
 
 
 
@@ -144,6 +143,7 @@
 
         
         GetJsonFromLambda();
+        questionModeChange(2);
 
 
 
@@ -502,15 +502,16 @@
                         
             //正誤判定
             if(getAnswer.value == answer_mean){
-                getResult.innerHTML=`正解!! （答え：${answer_mean}）`;point = "correct";
+                getResult.innerHTML=`<span style = "color: #4D94FF;">正解!!</span> <br>答え：${answer_mean}`;point = "correct";
+                //getResult.style.color="#92FFFF";
             }
 
             else if(getAnswer.value == ""){
-                getResult.innerHTML=`無回答 （答え：${answer_mean}）`;point = "noAnswer";
+                getResult.innerHTML=`無回答 <br>答え：${answer_mean}`;point = "noAnswer";
             }
 
             else{
-                getResult.innerHTML=`不正解 （答え：${answer_mean}）`;point = "incorrect";
+                getResult.innerHTML=`<span style = "color: #FF4444;">不正解</span><br>答え：${answer_mean}`;point = "incorrect";
             }   
             
 
@@ -541,8 +542,16 @@
 
 
         function questionModeChange(modeNumber){
-            if(modeNumber == 1){questionMode = "RANDOM";}
-            if(modeNumber == 2){questionMode = "MEMORY LEVEL";}
+            if(modeNumber == 1){
+                questionMode = "RANDOM";
+                getRandomMode.style.color = "#4D94FF";
+                getMemoryLevelMode.style.color = "#000000";
+            }
+            if(modeNumber == 2){
+                questionMode = "MEMORY LEVEL";
+                getRandomMode.style.color = "#000000";
+                getMemoryLevelMode.style.color = "#4D94FF";
+            }
             getModePlot.innerHTML=`MODE：${questionMode}`;
         };
 
