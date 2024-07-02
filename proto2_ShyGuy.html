@@ -103,6 +103,7 @@
 
     <script language="javascript" type="text/javascript">
         
+        //変数
         let wordsData = [];//[['英語',[["red","赤"],["blue",'青']]],['算数',[["1+1","2"],["3*4",'12']]]];
         let windowWidth = window.innerWidth;
         let problem_word ;
@@ -216,7 +217,7 @@
 
 
 
-        //問題をランダムに選び抽出
+        //旧問題をランダムに選び抽出
         function set_question1(wordsIDNumber){
 
 
@@ -270,7 +271,7 @@
 
 
 
-        //問題をランダムに選び抽出
+        //新問題をランダムに選び抽出
         function set_question(wordsIDNumber){
 
             
@@ -335,6 +336,7 @@
             
 
             answerLock_visibility(false,'collapse');
+            nextButton_visibility('collapse');
             
                  
             console.log(wordsData[wordsIDNumber]);
@@ -348,6 +350,7 @@
 
 
 
+        //出題された問題を一定期間でなくする
         function cooltimeLength(wordsIDNumber){
 
             let countWord = 0;    
@@ -389,7 +392,7 @@
 
 
 
-        //問題作成アルゴリズム
+        //旧問題作成アルゴリズム
         function shuffleQuestion1(wordsIDNumber){
 
 
@@ -434,7 +437,7 @@
 
 
 
-        //問題作成アルゴリズム
+        //新問題作成アルゴリズム
         function shuffleQuestion(wordsIDNumber){
 
 
@@ -442,6 +445,7 @@
             let a = wordsIDNumber;
 
 
+            //モードがランダムの時
             //memory_level = Math.floor(Math.exp((Math.random()-1)*6)*7);
             if(questionMode == 'RANDOM'){
                 console.log(questionMode);
@@ -455,6 +459,7 @@
             }
 
 
+            //モードがメモリーレベルに従う時
             if(questionMode == 'MEMORY LEVEL'){
                 console.log(questionMode);
                 memory_level =  Math.floor((7*Math.log10(2)-Math.log10(-127*(Math.random()-128/127)))/Math.log10(2));
@@ -568,11 +573,23 @@
             getAnswer.disabled = TrueOrFalse;
 
 
-            getResult.style.visibility= whichVisibility;
-            getNext.style.visibility = whichVisibility;
+            getResult.style.visibility= whichVisibility;           
 
 
             console.log(`answerLock_visibility(${TrueOrFalse, whichVisibility}) 終了`);
+
+
+        };
+
+
+
+
+
+
+        function nextButton_visibility(whichVisibility){
+
+
+            getNext.style.visibility = whichVisibility;
 
 
         };
@@ -875,6 +892,11 @@
 
                     //console.log(cooltimeWord);
                     //console.log(`This is the changed memory : ${wordsData[nowSelectWords][1][JSON.parse(result.body).new_memorylevel]}`);
+
+
+                    
+                    nextButton_visibility('visible');
+
 
 
                     console.log("POSTAnswerData() 終了");
