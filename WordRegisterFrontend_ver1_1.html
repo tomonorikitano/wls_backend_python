@@ -121,8 +121,8 @@
                         jsonstr = JSON.stringify(result.body);
                         console.log(JSON.parse(jsonstr));
                         console.log(JSON.parse(jsonstr).item_url);
-                        displayImage(JSON.parse(jsonstr).item_url);
                         resultDiv.innerHTML = JSON.parse(jsonstr).res;
+                        displayImage(JSON.parse(jsonstr).item_url);
                     })
                     .catch(error => {
                         resultDiv.innerHTML = "Error: " + error.message;
