@@ -79,7 +79,7 @@ button{
         border-left-width: 2px;
 
         padding: 1.2%;
-        background: -webkit-linear-gradient(top,#ffffff4d,#ffffff00);
+        background: -webkit-linear-gradient(left,#ffffff4d,#ffffff00);
         background-color: rgba(255, 193, 224, 0);
         width: 30%;
         font-size: min(1.7vw,18px);
