@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="ja">
+    <head>
+        <meta charset="utf-8">
+        <link rel="stylesheet" type="text/css" href="CSSforWordRegisterFrontend_03240709.css"/>
+        <title>単語登録</title>
+        <meta name="viewport" content="width=device-width,initial-scale=1">
+    </head>
+    <body>
+        <br>
+        <div class="divs">
+            <div class="div01">
+                <label for="mode">登録・削除：</label><br>
+                <select name="mode" id="mode" class="select01">
+                    <option value="register">登録</option>
+                    <option value="delete">単語削除</option>
+                    <option value="delete all">単語帳削除</option>
+                </select>
+                <br>
+            </div> 
+            <br>
+            <div class="div01">   
+                    <label for="id">単語帳名：</label>
+                    <br>
+                    <input type="text" id="id" name="id" class="input01" required>
+                    <br>
+                    <label for="word" class="label01">問題：</label>
+                    <br>
+                    <textarea id="word" name="word" class="textarea01" required></textarea>
+                    <br>
+                    <label for="mean" class="label01">答え：</label>
+                    <br>
+                    <textarea id="mean" name="mean" required class="textarea01"></textarea>
+                    <br>
+                    <label for ="item">イメージ（PNGのみ）：
+                    </label>
+                    <input type="file" id="item" name="item" class="input01" accept="image/png">
+                    <br>
+                <button type="button" id="submitButton" class="button01">決定</button>
+            </div>
+
+            
+            <br><br>
+            <div class="div02">
+                <div id="result"></div><br>
+                <div id="imageContainer"></div>
+            </div>
+        </div>
+
+        <footer>
+        </footer>
+
+        <script>
+            const button = document.getElementById("submitButton");
+            const resultDiv = document.getElementById("result");
+
+            button.addEventListener("click", setData);
+            
+            function setData() {
+                console.log(item.files);
+                if(item.files.length > 0){
+                    const inputElement = document.getElementById("item");
+                    const file = inputElement.files[0];
+
+                    const word = document.getElementById("word").value;
+                    const mean = document.getElementById("mean").value;
+                    const id = document.getElementById("id").value;
+                    const mode = document.getElementById("mode").value;
+
+                    const reader = new FileReader();
+                    reader.onload = function(e){
+
+                        const data = {
+                            "word" : word,
+                            "meaning": mean,
+                            "wordsID": id,
+                            "item": e.target.result,
+                            "mode": mode
+                        };
+
+                        sendDataToLambda(data);
+                    }
+                    reader.readAsDataURL(file);
+
+                }else{
+                    const word = document.getElementById("word").value;
+                    const mean = document.getElementById("mean").value;
+                    const id = document.getElementById('id').value;
+                    const item = "noneItem";
+                    const mode = document.getElementById("mode").value;
+
+                    const data = {
+                        "word": word,
+                        "meaning": mean,
+                        "wordsID": id,
+                        "item": item,
+                        "mode": mode
+                    }
+
+                    sendDataToLambda(data);
+                };
+
+            }
+
+            function sendDataToLambda(dataset){
+                console.log(dataset);
+                document.getElementById("result").innerHTML = "送信中です"
+                document.getElementById("imageContainer").innerHTML = ""
+
+                const param = {
+                    method: "POST",
+                    headers:{
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify(dataset)
+                };
+
+                fetch("https://0ik4fbpqda.execute-api.ap-northeast-1.amazonaws.com/demonstration_ToS3/", param)
+                    .then(response => response.json())
+                    .then(result => {
+                        jsonstr = JSON.stringify(result.body);
+                        console.log(JSON.parse(jsonstr));
+                        console.log(JSON.parse(jsonstr).item_url);
+                        displayImage(JSON.parse(jsonstr).item_url);
+                        resultDiv.innerHTML = JSON.parse(jsonstr).res;
+                    })
+                    .catch(error => {
+                        resultDiv.innerHTML = "Error: " + error.message;
+                    });
+
+                }
+
+            function displayImage(imageUrl){
+                //画像路表示するためのimg要素を作成
+                const imageElement = document.createElement("img");
+                if(imageUrl != "noneItem"){
+                    imageElement.src = imageUrl;
+                };
+
+                imageElement.alt = "Uploaded Image";
+
+                //画像を表示するコンテナに追加
+                const imageContainer = document.getElementById("imageContainer");
+                imageContainer.innerHTML = ""; //既存の要素をクリア
+                imageContainer.appendChild(imageElement);
+            }
+            
+
+            /*
+            document.addEventListener("keypress", keypress_ivent);
+            const audio = new Audio("keyClick.mp3");
+            function keypress_ivent(e) {
+                if (e.isComposing || e.key === 'Process' || e.keyCode === 229) {
+                    // IME入力中
+                    audio.pause();
+                    audio.currentTime = 0;
+                    audio.play();   
+                } else {
+                    // IME入力中でない
+                    audio.pause();
+                    audio.currentTime = 0;
+                    audio.play();   
+                }    
+            }*/
+
+
+        </script>
+
+    </body>
+</html>
