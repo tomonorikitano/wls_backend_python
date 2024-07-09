@@ -1,0 +1,141 @@
+@import url(https://fonts.googleapis.com/earlyaccess/notosansjp.css);
+
+body{
+    font-family: 'Noto Sans Japanese',   sans-serif;
+    font-weight:100;
+    color: rgba(62, 65, 95, 0.911);
+
+    padding: 1.5vw;
+
+    background-color: #ffffff00;
+    background: -webkit-linear-gradient(top,#bfebff,#ffd5f4);
+}
+button{
+
+    padding: 4px;
+    padding-left: 20px;
+    padding-right: 20px;
+
+    font-size: min(2vw,20px);
+    color: white;
+
+    border-color: rgba(255, 255, 255, 0);
+    border-width: 0;
+
+    background: -webkit-linear-gradient(left,#4b60bb93,#41d3ff8a);
+    box-shadow: 0px 3px 5px rgba(118, 118, 118, 0.463);
+}
+.button01:hover{
+    background-color: rgb(255, 255, 255);
+    cursor: pointer;
+    box-shadow: 7px 8px 12px rgba(118, 118, 118, 0.463);
+}
+.button01:active{
+    background-color: rgb(0, 0, 0);
+    cursor: pointer;
+    box-shadow: 0px 1px 2px rgba(118, 118, 118, 0.463);
+}
+
+@media screen and (max-width: 767px){
+    .div01{
+        border-left: solid;
+        border-width: 2px;
+        border-color: rgb(156, 181, 209);
+        border-left-width: 2px;
+    
+        padding: 10px;
+        background: -webkit-linear-gradient(left,#ffffff4d,#ffffff09);
+        background-color: rgba(255, 193, 224, 0);
+        font-size: 2vw;
+    }
+    .div02{
+        border-top: solid;
+        border-width: 2px;
+        border-color: rgb(224, 150, 187);
+        border-left-width: 2px;
+
+        padding: 20px;
+        background: -webkit-linear-gradient(top,#ffffff4d,#ffffff00);
+        background-color: rgba(255, 193, 224, 0);
+        font-size: 1.7vw;
+    }
+}
+@media screen and (min-width: 767px){
+    .div01{
+        border-left: solid;
+        border-width: 2px;
+        border-color: rgb(156, 181, 209);
+        border-left-width: 2px;
+    
+        padding: 2px;
+        background: -webkit-linear-gradient(left,#ffffff4d,#ffffff09);
+        background-color: rgba(255, 193, 224, 0);
+        font-size: min(2vw,20px);
+    }
+    .div02{
+        border-top: solid;
+        border-width: 2px;
+        border-color: rgb(224, 150, 187);
+        border-left-width: 2px;
+
+        padding: 2px;
+        background: -webkit-linear-gradient(top,#ffffff4d,#ffffff00);
+        background-color: rgba(255, 193, 224, 0);
+        font-size: min(1.7vw,18px);
+    }
+    .divs{
+        display:flex;
+    }
+}
+
+
+footer{
+    background-color: #ffffff;
+}
+.input01{
+
+    background: -webkit-linear-gradient(left,#ffffffb6,#ffffff21);
+    font-size: min(2vw,20px);
+    font-weight: bolder;
+
+    padding-left: 15px;
+    padding-right: 15px;
+
+    border-width: 0;
+    border-left: solid;
+    border-left-width: 2px;
+    border-color: rgb(109, 135, 165);
+}
+.label01{
+    font-size: min(2vw,20px);
+}
+.select01{
+
+    background: -webkit-linear-gradient(left,#ffffff75,#ffffff41);
+
+    font-size: min(2vw,20px);
+    font-weight: bolder;
+    color: rgba(62, 65, 95, 0.911);
+
+    padding-left: 4px;
+
+    border-width: 0;
+}
+.textarea01{
+    background: -webkit-linear-gradient(left,#ffffff88,#ffffff2c);
+
+    font-family: 'Noto Sans Japanese',   sans-serif;
+    font-size: min(2vw,20px);
+    color: rgba(62, 65, 95, 0.911);
+
+    width: 80%;
+    height: 12vh;
+    
+    padding: 10px;
+    padding-right: 10px;
+
+    border-width: 0px;
+    border-left: solid;
+    border-left-width: 2px;
+    border-color: rgb(109, 135, 165);
+}
