@@ -6,7 +6,8 @@ body{
     color: rgba(62, 65, 95, 0.911);
 
     padding: 1.5vw;
-
+    margin: 0px;
+    
     background-color: #ffffff00;
     background: -webkit-linear-gradient(top,#bfebff,#ffd5f4);
 }
@@ -46,7 +47,7 @@ button{
         padding: 2%;
         background: -webkit-linear-gradient(left,#ffffff4d,#ffffff09);
         background-color: rgba(255, 193, 224, 0);
-        font-size: 2vw;
+        font-size: max(2vw,10px);
     }
     .div02{
         border-top: solid;
@@ -57,7 +58,7 @@ button{
         padding: 2%;
         background: -webkit-linear-gradient(top,#ffffff4d,#ffffff00);
         background-color: rgba(255, 193, 224, 0);
-        font-size: 1.7vw;
+        font-size: max(1.7vw,8px);
     }
 }
 @media screen and (min-width: 767px){
@@ -101,7 +102,7 @@ img{
 .input01{
 
     background: -webkit-linear-gradient(left,#ffffffb6,#ffffff21);
-    font-size: min(2vw,20px);
+    font-size: max(10px,min(2vw,20px));
     font-weight: bolder;
 
     padding-left: 1%;
@@ -113,13 +114,13 @@ img{
     border-color: rgb(109, 135, 165);
 }
 .label01{
-    font-size: min(2vw,20px);
+    font-size: max(10px,min(2vw,20px));
 }
 .select01{
 
     background: -webkit-linear-gradient(left,#ffffff75,#ffffff41);
 
-    font-size: min(2vw,20px);
+    font-size: max(10px,min(2vw,20px));
     font-weight: bolder;
     color: rgba(62, 65, 95, 0.911);
 
@@ -131,7 +132,7 @@ img{
     background: -webkit-linear-gradient(left,#ffffff88,#ffffff2c);
 
     font-family: 'Noto Sans Japanese',   sans-serif;
-    font-size: min(2vw,20px);
+    font-size: max(10px,min(2vw,20px));
     color: rgba(62, 65, 95, 0.911);
 
     width: 80%;
