@@ -7,7 +7,6 @@
         <meta name="viewport" content="width=device-width,initial-scale=1">
     </head>
     <body>
-        <br>
         <div class="divs">
             <div class="div01">
                 <label for="mode">登録・削除：</label><br>
@@ -17,30 +16,25 @@
                     <option value="delete all">単語帳削除</option>
                 </select>
                 <br>
-            </div> 
-            <br>
-            <div class="div01">   
-                    <label for="id">単語帳名：</label>
-                    <br>
-                    <input type="text" id="id" name="id" class="input01" required>
-                    <br>
-                    <label for="word" class="label01">問題：</label>
-                    <br>
-                    <textarea id="word" name="word" class="textarea01" required></textarea>
-                    <br>
-                    <label for="mean" class="label01">答え：</label>
-                    <br>
-                    <textarea id="mean" name="mean" required class="textarea01"></textarea>
-                    <br>
-                    <label for ="item">イメージ（PNGのみ）：
-                    </label>
-                    <input type="file" id="item" name="item" class="input01" accept="image/png">
-                    <br>
+                <label for="id">単語帳名：</label>
+                <br>
+                <input type="text" id="id" name="id" class="input01" required>
+                <br>
+                <label for="word" class="label01">問題：</label>
+                <br>
+                <textarea id="word" name="word" class="textarea01" required></textarea>
+                <br>
+                <label for="mean" class="label01">答え：</label>
+                <br>
+                <textarea id="mean" name="mean" required class="textarea01"></textarea>
+                <br>
+                <label for ="item">イメージ（PNGのみ）：
+                </label>
+                <input type="file" id="item" name="item" class="input01" accept="image/png">
+                <br>
                 <button type="button" id="submitButton" class="button01">決定</button>
             </div>
-
-            
-            <br><br>
+            <br>
             <div class="div02">
                 <div id="result"></div><br>
                 <div id="imageContainer"></div>
