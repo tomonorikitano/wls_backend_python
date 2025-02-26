@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+    <html lang="ja">
+        
+    <head>
+        <meta charset="utf-8" name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+        <link rel="stylesheet" type="text/css" href="wordBook.css"/>
+        <title>WORD TEST</title>    
+    </head>
+
+    <body>
+        <header>
+            <div class="menuButton cursorClick" onclick="menuBarSlideIn()"></div>
+            <h1 class="headerName">WORD BOOK QUESTION</h1>
+        </header>
+
+
+        
+        <hr></hr>
+
+        <main>
+            <div id="menuBar" class="menuBarClass" >
+                <div class="menuOutButton cursorClick" onclick="menuBarSlideOut()"></div>
+                <div class="menuBarMenu">
+                    <div onclick="location.href='https://tomonorikitano.github.io/wls_backend_python/' " class="cursorClick">
+                        BACK HOME
+                    </div>
+                    <br>
+                    <div class="modeDiv">
+                        <div>
+                            MODE
+                        </div>
+                        <div class="modeBar">
+                            <br>
+                            <div id="randomMode"  class="cursorClick" onclick="resetCountQuestion(); questionModeChange(1);">
+                                RANDOM
+                                <br>
+                                <br>
+                            </div>
+                            <div id= "memoryLevelMode" class="cursorClick" onclick="resetCountQuestion(); questionModeChange(2);">
+                                MEMORY LEVEL
+                                <br>
+                                <br>
+                            </div>
+                            <div id= "weakPointMode" class="cursorClick" onclick="resetCountQuestion(); questionModeChange(3);">
+                                弱点重点モード
+                                <br>
+                                <br>
+                            </div>
+                            <div id= "strongPointMode" class="cursorClick" onclick="resetCountQuestion(); questionModeChange(4);">
+                                得意単語モード
+                            </div>
+                            <br>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="modePlot"></div>
+            
+            <div>
+                <section id="selectWordsID">
+                    <ul id="listWordsID">
+                    </ul>
+                </section>
+                <section id="questionWord">
+                    <div>
+                        <div class="questionHeader" onclick="wordsListAnimation()">
+                            <h1 id="wordsIDName"></h1>
+                            <p id="yourLevel"></p>
+                        </div>
+                        <div>
+                            <br>
+                            <div id="wordDiv">
+                                <h2 id="word"></h2>
+                            </div>
+                            <div id="imageDiv">
+                                <img src="" style="display: collapse;" id="imagePlot">
+                            </div>
+                            <input type="text" id="answer">
+                            <button type="button" onclick="check();" id="StartToCheck" class="cursorClick">解答</button>
+                            <div id="word"></div>
+                            <br>
+                            <br>
+                            <div>
+                                <div id="result"></div> 
+                            </div>
+                            <div class="divNext">
+                                <button type="button" onclick="next_question();" id="next" class="cursorClick" style="visibility: hidden;">次へ</button>
+                            </div>
+                            
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </main>
+        <br>
+
+        <br>
+
+
+        <!--
+            wordsID
+            word
+            answer
+            StartToCheck
+            next
+            result
+        -->
+        <script src="https://cdn.jsdelivr.net/npm/vue@2.6.11"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.2/axios.min.js"></script>
+
+        <script src="wordBookJS/01wordManager.js"></script>
+        <script src="wordBookJS/02testManager.js"></script>
+        <script src="wordBookJS/03styleManager.js"></script>
+        <script src="wordBookJS/04animationManager.js"></script>
+        <script src="wordBookJS/05JSONManager.js"></script>
+        <script src="wordBookJS/06eventManager.js"></script>
+
+
+    </body>
+
+    <script language="javascript" type="text/javascript">
+        
+        //変数
+        let wordsData = [];//[['英語',[["red","赤"],["blue",'青']]],['算数',[["1+1","2"],["3*4",'12']]]];
+        let windowWidth = window.innerWidth;
+        let problem_word ;
+        let answer_mean ;
+        let memory_level ;
+        let word_image = null;
+        let shuffle ;
+        let downloadedJsonDataWordsID;
+        let wordsID;
+        let nowSelectWords;
+        let oneBackSelectWords;
+        let point;
+        let whatIn;
+        let questionMode = "MEMORY LEVEL";
+        let cooltimeWord = [];
+        let countQuestion;
+
+        //定数
+        //const getWordsID = document.getElementById('wordsID');
+        const button = document.getElementById('click');
+        const getWord = document.getElementById("word");
+        const getStartCheck = document.getElementById('StartToCheck');
+        const getAnswer = document.getElementById('answer');
+        const getResult = document.getElementById('result');
+        const getNext = document.getElementById('next');
+        const getListWordsID = document.getElementById("listWordsID");
+        const getAreaSelect = document.getElementsByClassName("areaSelect");        
+        const getNewBlock = document.getElementsByClassName("newBlock");
+        const getWordsIDName = document.getElementById("wordsIDName");
+        const getYourLevel = document.getElementById("yourLevel");
+        const getModePlot = document.getElementById("modePlot");
+        const getImagePlot = document.getElementById("imagePlot");
+        const getImageDiv = document.getElementById("imageDiv");
+        const getRandomMode = document.getElementById("randomMode");
+        const getMemoryLevelMode = document.getElementById("memoryLevelMode");
+        const getWeakPointMode = document.getElementById("weakPointMode");
+        const getStrongPointMode = document.getElementById("strongPointMode");
+
+
+
+
+
+
+        
+        GetJsonFromLambda();
+        resetCountQuestion();
+        questionModeChange(2);
+    </script>
+</html>
