@@ -7,6 +7,7 @@ function wordsListAnimation(){
         document.getElementById("questionWord").style.visibility = "collapse"; 
         getImageDiv.style.display = "collapse";
         getImageDiv.style.visibility = "hidden";
+        getNext.style.visibility = "hidden";
         answerLock_visibility(false,'collapse');           
     }
 };
